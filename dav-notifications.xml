@@ -18,7 +18,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 <?rfc private="Calendar Server Extension"?>
-<rfc ipr="none" docName='webdav-notifications-00'>
+<rfc ipr="trust200902" docName='webdav-notifications-00'>
     <front>
         <title abbrev="WebDAV User Notifications">WebDAV: User Notifications</title>
         <author initials="C." surname="Daboo" fullname="Cyrus Daboo">
