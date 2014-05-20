@@ -6,6 +6,7 @@
 <!ENTITY rfc3744 PUBLIC '' 'bibxml/reference.RFC.3744.xml'>
 <!ENTITY rfc4791 PUBLIC '' 'bibxml/reference.RFC.4791.xml'>
 <!ENTITY rfc4918 PUBLIC '' 'bibxml/reference.RFC.4918.xml'>
+<!ENTITY rfc6352 PUBLIC '' 'bibxml/reference.RFC.6352.xml'>
 ]>
 <?rfc toc="yes"?>
 <?rfc tocdepth="4"?>
@@ -40,13 +41,24 @@
         <abstract>
             <t>
                 This specification defines an extension to WebDAV that allows the server to provide notifications to users.
-</t>
+            </t>
         </abstract>
     </front>
     <middle>
         <section title='Introduction'>
-            <t><xref target="RFC4791">CalDAV</xref> provides a way for calendar users to store calendar data and exchange this data via scheduling operations. Based on the <xref target='RFC4918'>WebDAV</xref> protocol, it also includes the ability to manage access to calendar data via the <xref target='RFC3744'>WebDAV ACL</xref> extension.</t>
-            <t>It is often useful for servers to communicate arbitrary information to calendar users, e.g., system status, message of the day, quota warnings, changes to shared resources made by others etc. This specification defines a generic "notification" mechanism that allows a server to do that. Whilst primarily aimed at <xref target="RFC4791">CalDAV</xref>, this mechanism has been designed to be adaptable to <xref target='RFC4918'>WebDAV</xref>.</t>
+            <t>
+                It is often useful for servers to communicate arbitrary
+                information to the end-users for a WebDAV system, such as a
+                system status, message of the day or changes to changes made
+                to shared resources by other users.
+           </t>
+           <t>
+               This specification defines a generic "notification" mechanism
+               that allows a server to do that. Whilst primarily aimed at
+               <xref target="RFC4791">CalDAV</xref> and <xref target="RFC6352">CardDAV</xref>
+               this mechanism has been designed to be adaptable to other
+               applications of <xref target='RFC4918'>WebDAV</xref>.
+           </t>
         </section>
 
         <section title="Open Issues">
@@ -62,27 +74,37 @@
                 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target='RFC2119' />.
             </t>
             <t>
-                When XML element types in the namespaces "DAV:" and "urn:ietf:params:xml:ns:caldav" are referenced in this document outside of the context of an XML fragment, the string "DAV:" and "CALDAV:" will be prefixed to the element type names respectively.
+                When XML element types in the namespaces "DAV:" is referenced
+                in this document outside of the context of an XML fragment,
+                the string "DAV:" will be prefixed to the element type name.
+            </t>
+        </section>
+
+        <section title="Requirements Overview">
+            <t>
+                To add support for WebDAV notifications, a server MUST at
+                least have support for <xref target="RFC4918">WebDAV Class 3</xref>.
             </t>
             <t>
-                The namespace "http://calendarserver.org/ns/" is used for XML elements defined in this specification.  When XML element types in that namespace are referenced in this document outside of the context of an XML fragment, the string "CS:" will be prefixed to the element type names.
+                WebDAV notifications also defines new properties on principal
+                resources, which are defined in <xref target="RFC3744">RFC3744</xref>.
             </t>
         </section>
 
         <section title="Notifications">
-            <t>When this feature is available, a <xref target="CS:notification-URL">CS:notification-URL</xref> property appears on principal resources for those principals who are able to receive notifications. That property specifies a single DAV:href element whose content refers to a WebDAV collection resource. Notification "messages" are deposited into this collection and can be retrieved by clients and acted on accordingly.</t>
-            <t>The notification collection referenced by the <xref target="CS:notification-URL">CS:notification-URL</xref> property MUST have a DAV:resourcetype property with DAV:collection and <xref target="CS:notifications">CS:notifications</xref> child elements.</t>
-            <t>Notification "messages" are XML documents stored as resources in the notification collection. Each XML document contains a <xref target="CS:notification">CS:notification</xref> element as its root. The root element contains a CS:dtstamp element, and one additional element which represents the type of notification being conveyed in the message. That child element will typically contain additional content that describes the notification.</t>
-            <t>Each notification resource has a <xref target="CS:notificationtype">CS:notificationtype</xref> property which contains as its single child element an empty element that matches the child element of the notification resource XML document root. Any attributes on the child element in the XML document are also present in the property child element.</t>
-            <t>Notifications are automatically generated by the server (perhaps in response to a   action) with an appropriate resource stored in the notifications collection of the user to whom the notification is targeted. Clients SHOULD monitor the notification collection looking for new notification resources. When doing so, clients SHOULD look at the <xref target="CS:notificationtype">CS:notificationtype</xref> property to ensure that the notification is of a type that the client can handle. Once a client has handled the notification in whatever way is appropriate it SHOULD delete the notification resource. Clients SHOULD remove notifications being displayed to a user when the notification resource is removed from the notification collection, to enable the user to dismiss a notification on one device and have it automatically removed from others. Clients MUST ignore all notifications for types they do not recognize. Servers MAY delete notification resources on their own if they determine that the notifications are no longer relevant or valid. Servers MAY coalesce notifications as appropriate.</t>
+            <t>When this feature is available, a <xref target="DAV:notification-URL">DAV:notification-URL</xref> property appears on principal resources for those principals who are able to receive notifications. That property specifies a single DAV:href element whose content refers to a WebDAV collection resource. Notification "messages" are deposited into this collection and can be retrieved by clients and acted on accordingly.</t>
+            <t>The notification collection referenced by the <xref target="DAV:notification-URL">DAV:notification-URL</xref> property MUST have a DAV:resourcetype property with DAV:collection and <xref target="DAV:notifications">DAV:notifications</xref> child elements.</t>
+            <t>Notification "messages" are XML documents stored as resources in the notification collection. Each XML document contains a <xref target="DAV:notification">DAV:notification</xref> element as its root. The root element contains a DAV:dtstamp element, and one additional element which represents the type of notification being conveyed in the message. That child element will typically contain additional content that describes the notification.</t>
+            <t>Each notification resource has a <xref target="DAV:notificationtype">DAV:notificationtype</xref> property which contains as its single child element an empty element that matches the child element of the notification resource XML document root. Any attributes on the child element in the XML document are also present in the property child element.</t>
+            <t>Notifications are automatically generated by the server with an appropriate resource stored in the notifications collection of the user to whom the notification is targeted. Clients SHOULD monitor the notification collection looking for new notification resources. When doing so, clients SHOULD look at the <xref target="DAV:notificationtype">DAV:notificationtype</xref> property to ensure that the notification is of a type that the client can handle. Once a client has handled the notification in whatever way is appropriate it SHOULD delete the notification resource. Clients SHOULD remove notifications being displayed to a user when the notification resource is removed from the notification collection, to enable the user to dismiss a notification on one device and have it automatically removed from others. Clients MUST ignore all notifications for types they do not recognize. Servers MAY delete notification resources on their own if they determine that the notifications are no longer relevant or valid. Servers MAY coalesce notifications as appropriate.</t>
             <t>Servers MUST prevent clients from adding resources in the notification collection.</t>
             <section title="Additional Principal Properties" anchor='principal-properties'>
                 <t>This section defines new properties for WebDAV principal resources as defined in <xref target="RFC3744">RFC3744</xref>. These properties are likely to be protected but the server MAY allow them to be written by appropriate users.</t>
-                <section title="CS:notification-URL Property" anchor="CS:notification-URL">
+                <section title="DAV:notification-URL Property" anchor="DAV:notification-URL">
                   <t>
                     <list style="hanging">
                       <t hangText="Name:">notification-URL</t>
-                      <t hangText="Namespace:">http://calendarserver.org/ns/</t>
+                      <t hangText="Namespace:">DAV:</t>
                       <t hangText="Purpose:">Identify the URL of the notification collection owned by the associated principal resource.</t>
                       <t hangText="Protected:">This property SHOULD be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
@@ -101,11 +123,11 @@
             </section>
             <section title="Properties on Notification Resources" anchor='notification-properties'>
                 <t>The following new WebDAV properties are defined for notification resources.</t>
-                <section title="CS:notificationtype Property" anchor="CS:notificationtype">
+                <section title="DAV:notificationtype Property" anchor="DAV:notificationtype">
                   <t>
                     <list style="hanging">
                       <t hangText="Name:">notificationtype</t>
-                      <t hangText="Namespace:">http://calendarserver.org/ns/</t>
+                      <t hangText="Namespace:">DAV:</t>
                       <t hangText="Purpose:">Identify the type of notification of the corresponding resource.</t>
                       <t hangText="Protected:">This property MUST be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
@@ -125,11 +147,11 @@
                 </section>
             </section>
             <section title='XML Element Definitions'>
-                <section title="CS:notifications" anchor="CS:notifications">
+                <section title="DAV:notifications" anchor="DAV:notifications">
                     <t>
                       <list style="hanging">
                         <t hangText="Name:">notifications</t>
-                        <t hangText="Namespace:">http://calendarserver.org/ns/</t>
+                        <t hangText="Namespace:">DAV:</t>
                         <t hangText="Purpose:">Indicates a notification collection.</t>
                         <t hangText="Description:">This XML element is used in a DAV:resourcetype element to indicate that the corresponding resource is a notification collection.</t>
                         <t hangText="Definition:">
@@ -141,11 +163,11 @@
                       </list>
                     </t>
                 </section>
-                <section title="CS:notification" anchor="CS:notification">
+                <section title="DAV:notification" anchor="DAV:notification">
                     <t>
                       <list style="hanging">
                         <t hangText="Name:">notification</t>
-                        <t hangText="Namespace:">http://calendarserver.org/ns/</t>
+                        <t hangText="Namespace:">DAV:</t>
                         <t hangText="Purpose:">Notification message root element.</t>
                         <t hangText="Description:">The root element used in notification resources.</t>
                         <t hangText="Definition:">
@@ -153,17 +175,17 @@
                             <artwork><![CDATA[
 <!ELEMENT notification (dtstamp, XXX) >
 <!-- Any notification type element can appear after
-     CS:dtstamp -->]]></artwork>
+     DAV:dtstamp -->]]></artwork>
                           </figure>
                         </t>
                       </list>
                     </t>
                 </section>
-              <section title="CS:dtstamp" anchor="CS:dtstamp">
+              <section title="DAV:dtstamp" anchor="DAV:dtstamp">
                 <t>
                   <list style="hanging">
                     <t hangText="Name:">dtstamp</t>
-                    <t hangText="Namespace:">http://calendarserver.org/ns/</t>
+                    <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">Date-time stamp.</t>
                     <t hangText="Description:">Contains the date-time stamp corresponding to the creation of a notification message, using the format defined in <xref target="RFC3339"/>, or the "compact" format without "-" and ":" characters between date and time elements, respectively.</t>
                     <t hangText="Definition:">
@@ -185,23 +207,23 @@
             <t>This section defines a set of common notification types.</t>
             <section title="System Status Notification">
                 <t>The system status notification is used to convey a URI and/or textual description to the user. The assumption is that the URI points to a webpage where current system status is described in detail, with the provided description being a summary of that. A "type" attribute on the element is used to indicate the importance of the current status notification, and has the values "low", "medium" and "high", representing the increasing level of importance of the message respectively.</t>
-                <t>Servers might have knowledge of specific calendar user language preferences, in which case it MAY localise the CS:description value as appropriate based on the calendar user accessing the notification, but if it does, it SHOULD include an xml:lang attribute on the CS:description element to indicate what language is being used.</t>
-                <section title="CS:systemstatus Element Definition" anchor="CS:systemstatus">
+                <t>Servers might have knowledge of specific calendar user language preferences, in which case it MAY localise the DAV:description value as appropriate based on the calendar user accessing the notification, but if it does, it SHOULD include an xml:lang attribute on the DAV:description element to indicate what language is being used.</t>
+                <section title="DAV:systemstatus Element Definition" anchor="DAV:systemstatus">
                     <t>
                       <list style="hanging">
                         <t hangText="Name:">systemstatus</t>
-                        <t hangText="Namespace:">http://calendarserver.org/ns/</t>
+                        <t hangText="Namespace:">DAV:</t>
                         <t hangText="Purpose:">Indicates a system status notification.</t>
-                        <t hangText="Description:">This XML element is used in a CS:notification element to describe a system status notification.</t>
+                        <t hangText="Description:">This XML element is used in a DAV:notification element to describe a system status notification.</t>
                         <t hangText="Definition:">
                           <figure>
                             <artwork><![CDATA[
-<!ELEMENT systemstatus (DAV:href?, CS:description?)>
+<!ELEMENT systemstatus (DAV:href?, DAV:description?)>
 <!ATTLIST systemstatus type (low | medium | high) "low">
 
   <!ELEMENT description CDATA>
 
-<!-- One of DAV:href of CS:description MUST be present -->
+<!-- One of DAV:href of DAV:description MUST be present -->
 ]]></artwork>
                           </figure>
                         </t>
@@ -209,25 +231,23 @@
                           <figure>
                             <artwork><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<CS:notification xmlns:D="DAV:"
-                 xmlns:CS="http://calendarserver.org/ns/">
-  <CS:dtstamp>2011-12-09T11:12:53-05:00</CS:dtstamp>
-  <CS:systemstatus type="high">
+<D:notification xmlns:D="DAV:">
+  <D:dtstamp>2011-12-09T11:12:53-05:00</D:dtstamp>
+  <D:systemstatus type="high">
     <D:href>http://example.com/emergency_shutdown.html</D:href>
-    <CS:description xml:lang='en_US'
-    >Emergency shutdown now</CS:description>
-  </CS:systemstatus>
-</CS:notification>]]></artwork>
+    <D:description xml:lang='en_US'
+    >Emergency shutdown now</D:description>
+  </D:systemstatus>
+</D:notification>]]></artwork>
                           </figure>
                         </t>
                         <t hangText="Example:">This is an example of the WebDAV property on the example notification resource above:
                           <figure>
                             <artwork><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<CS:notificationtype xmlns:D="DAV:"
-                     xmlns:CS="http://calendarserver.org/ns/">
-  <CS:systemstatus type="high" />
-</CS:notificationtype>]]></artwork>
+<D:notificationtype xmlns:D="DAV:">
+  <D:systemstatus type="high" />
+</D:notificationtype>]]></artwork>
                           </figure>
                         </t>
                       </list>
