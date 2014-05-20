@@ -6,7 +6,7 @@
 <!ENTITY rfc3744 PUBLIC '' 'bibxml/reference.RFC.3744.xml'>
 <!ENTITY rfc4791 PUBLIC '' 'bibxml/reference.RFC.4791.xml'>
 <!ENTITY rfc4918 PUBLIC '' 'bibxml/reference.RFC.4918.xml'>
-]> 
+]>
 <?rfc toc="yes"?>
 <?rfc tocdepth="4"?>
 <?rfc strict="yes"?>
@@ -19,7 +19,7 @@
 <?rfc private="Calendar Server Extension"?>
 <rfc ipr="none" docName='caldav-notifications-00'>
     <front>
-        <title abbrev="CalDAV User Notifications">CalDAV: Calendar User Notifications</title> 
+        <title abbrev="CalDAV User Notifications">CalDAV: Calendar User Notifications</title>
         <author initials="C." surname="Daboo" fullname="Cyrus Daboo">
             <organization abbrev="Apple Inc.">
                 Apple Inc.
@@ -29,7 +29,7 @@
                     <street>1 Infinite Loop</street>
                     <city>Cupertino</city>
                     <region>CA</region>
-                    <code>95014</code> 
+                    <code>95014</code>
                     <country>USA</country>
                 </postal>
                 <email>cyrus@daboo.name</email>
@@ -56,19 +56,19 @@
                 </list>
             </t>
         </section>
-            
+
         <section title='Conventions Used in This Document'>
             <t>
-                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target='RFC2119' />. 
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target='RFC2119' />.
             </t>
             <t>
-                When XML element types in the namespaces "DAV:" and "urn:ietf:params:xml:ns:caldav" are referenced in this document outside of the context of an XML fragment, the string "DAV:" and "CALDAV:" will be prefixed to the element type names respectively. 
+                When XML element types in the namespaces "DAV:" and "urn:ietf:params:xml:ns:caldav" are referenced in this document outside of the context of an XML fragment, the string "DAV:" and "CALDAV:" will be prefixed to the element type names respectively.
             </t>
             <t>
-                The namespace "http://calendarserver.org/ns/" is used for XML elements defined in this specification.  When XML element types in that namespace are referenced in this document outside of the context of an XML fragment, the string "CS:" will be prefixed to the element type names. 
+                The namespace "http://calendarserver.org/ns/" is used for XML elements defined in this specification.  When XML element types in that namespace are referenced in this document outside of the context of an XML fragment, the string "CS:" will be prefixed to the element type names.
             </t>
         </section>
-         
+
         <section title="Notifications">
             <t>When this feature is available, a <xref target="CS:notification-URL">CS:notification-URL</xref> property appears on principal resources for those principals who are able to receive notifications. That property specifies a single DAV:href element whose content refers to a WebDAV collection resource. Notification "messages" are deposited into this collection and can be retrieved by clients and acted on accordingly.</t>
             <t>The notification collection referenced by the <xref target="CS:notification-URL">CS:notification-URL</xref> property MUST have a DAV:resourcetype property with DAV:collection and <xref target="CS:notifications">CS:notifications</xref> child elements.</t>
@@ -87,7 +87,7 @@
                       <t hangText="Protected:">This property SHOULD be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value SHOULD be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This property is needed for a client to determine where the notification collection of the current user is located so that processing of notification messages can occur. If not present, then the associated calendar user is not enabled for notification messages on the server.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -110,7 +110,7 @@
                       <t hangText="Protected:">This property MUST be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This property allows a client, via a PROPFIND Depth:1 request, to quickly find notification messages that the client can handle in a notification collection. The single child element is the notification resource root element's child defining the notification itself. This element MUST be empty, though any attributes on the element in the notification resource MUST be present in the property element.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -170,7 +170,7 @@
                       <figure>
                         <artwork><![CDATA[
 <!ELEMENT dtstamp (#PCDATA)>
-<!-- Value is a date-time in UTZ as per [RFC3339] with 
+<!-- Value is a date-time in UTZ as per [RFC3339] with
      "compact" format allowed.-->]]></artwork>
                       </figure>
                     </t>
@@ -465,24 +465,24 @@
 
     <!ELEMENT master EMPTY>
     <!-- The "master" instance was affected -->
-    
+
     <!ELEMENT recurrenceid CDATA>
     <!-- RECURRENCE-ID value in iCalendar form (in UTC if a
          non-floating DATE-TIME value) for the affected instance -->
-    
+
     <!ELEMENT added EMPTY>
     <!-- The component was added -->
-    
+
     <!ELEMENT removed EMPTY>
     <!-- The component was removed -->
-    
+
     <!ELEMENT changes changed-property*>
     <!-- Detailed changes in the iCalendar data -->
-    
+
       <!ELEMENT changed-property changed-parameter*>
       <!ATTLIST changed-property name PCDATA>
       <!-- An iCalendar property changed -->
-    
+
         <!ELEMENT changed-parameter EMPTY>
         <!ATTLIST changed-parameter name PCDATA>
         <!-- An iCalendar property parameter changed -->]]></artwork>
@@ -618,7 +618,7 @@
                       <t hangText="Protected:">This property MUST NOT be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This property allows a user to enable or disable the server generation of resource change notifications for the calendar collection, and all its child resources, on which the property resides. If the property is not present on a calendar collection, the client and server MUST assume that resource change notifications are enabled.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -626,7 +626,7 @@
 <!ELEMENT notify-changes (true|false)>
   <!ELEMENT true EMPTY>
   <!ELEMENT false EMPTY>
-  
+
 <!-- true - notifications enabled,
      false - notifications disabled -->]]></artwork>
                         </figure>
