@@ -1,0 +1,448 @@
+
+
+
+
+                                                                C. Daboo
+                                                              Apple Inc.
+                                                            May 20, 2014
+
+
+                       WebDAV: User Notifications
+                        webdav-notifications-00
+
+Abstract
+
+   This specification defines an extension to WebDAV that allows the
+   server to provide notifications to users.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   1
+   2.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Conventions Used in This Document . . . . . . . . . . . . . .   2
+   4.  Requirements Overview . . . . . . . . . . . . . . . . . . . .   2
+   5.  Notifications . . . . . . . . . . . . . . . . . . . . . . . .   2
+     5.1.  Additional Principal Properties . . . . . . . . . . . . .   3
+       5.1.1.  DAV:notification-URL Property . . . . . . . . . . . .   3
+     5.2.  Properties on Notification Resources  . . . . . . . . . .   4
+       5.2.1.  DAV:notificationtype Property . . . . . . . . . . . .   4
+     5.3.  XML Element Definitions . . . . . . . . . . . . . . . . .   5
+       5.3.1.  DAV:notifications . . . . . . . . . . . . . . . . . .   5
+       5.3.2.  DAV:notification  . . . . . . . . . . . . . . . . . .   5
+       5.3.3.  DAV:dtstamp . . . . . . . . . . . . . . . . . . . . .   5
+   6.  Notification Definitions  . . . . . . . . . . . . . . . . . .   6
+     6.1.  System Status Notification  . . . . . . . . . . . . . . .   6
+       6.1.1.  DAV:systemstatus Element Definition . . . . . . . . .   6
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   7
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   8
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
+
+1.  Introduction
+
+   It is often useful for servers to communicate arbitrary information
+   to the end-users for a WebDAV system, such as a system status,
+   message of the day or changes to changes made to shared resources by
+   other users.
+
+   This specification defines a generic "notification" mechanism that
+   allows a server to do that.  Whilst primarily aimed at CalDAV
+
+
+
+Daboo                   Expires November 21, 2014               [Page 1]
+
+                        WebDAV User Notifications               May 2014
+
+
+   [RFC4791] and CardDAV [RFC6352] this mechanism has been designed to
+   be adaptable to other applications of WebDAV [RFC4918].
+
+2.  Open Issues
+
+   1.  Define specific child elements for system status notification,
+       e.g. "server-maintenance-period", "server-read-only-period",
+       "client-upgrade-required".
+
+3.  Conventions Used in This Document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+   When XML element types in the namespaces "DAV:" is referenced in this
+   document outside of the context of an XML fragment, the string "DAV:"
+   will be prefixed to the element type name.
+
+4.  Requirements Overview
+
+   To add support for WebDAV notifications, a server MUST at least have
+   support for WebDAV Class 3 [RFC4918].
+
+   WebDAV notifications also defines new properties on principal
+   resources, which are defined in RFC3744 [RFC3744].
+
+5.  Notifications
+
+   When this feature is available, a DAV:notification-URL
+   (Section 5.1.1) property appears on principal resources for those
+   principals who are able to receive notifications.  That property
+   specifies a single DAV:href element whose content refers to a WebDAV
+   collection resource.  Notification "messages" are deposited into this
+   collection and can be retrieved by clients and acted on accordingly.
+
+   The notification collection referenced by the DAV:notification-URL
+   (Section 5.1.1) property MUST have a DAV:resourcetype property with
+   DAV:collection and DAV:notifications (Section 5.3.1) child elements.
+
+   Notification "messages" are XML documents stored as resources in the
+   notification collection.  Each XML document contains a
+   DAV:notification (Section 5.3.2) element as its root.  The root
+   element contains a DAV:dtstamp element, and one additional element
+   which represents the type of notification being conveyed in the
+   message.  That child element will typically contain additional
+   content that describes the notification.
+
+
+
+
+Daboo                   Expires November 21, 2014               [Page 2]
+
+                        WebDAV User Notifications               May 2014
+
+
+   Each notification resource has a DAV:notificationtype (Section 5.2.1)
+   property which contains as its single child element an empty element
+   that matches the child element of the notification resource XML
+   document root.  Any attributes on the child element in the XML
+   document are also present in the property child element.
+
+   Notifications are automatically generated by the server with an
+   appropriate resource stored in the notifications collection of the
+   user to whom the notification is targeted.  Clients SHOULD monitor
+   the notification collection looking for new notification resources.
+   When doing so, clients SHOULD look at the DAV:notificationtype
+   (Section 5.2.1) property to ensure that the notification is of a type
+   that the client can handle.  Once a client has handled the
+   notification in whatever way is appropriate it SHOULD delete the
+   notification resource.  Clients SHOULD remove notifications being
+   displayed to a user when the notification resource is removed from
+   the notification collection, to enable the user to dismiss a
+   notification on one device and have it automatically removed from
+   others.  Clients MUST ignore all notifications for types they do not
+   recognize.  Servers MAY delete notification resources on their own if
+   they determine that the notifications are no longer relevant or
+   valid.  Servers MAY coalesce notifications as appropriate.
+
+   Servers MUST prevent clients from adding resources in the
+   notification collection.
+
+5.1.  Additional Principal Properties
+
+   This section defines new properties for WebDAV principal resources as
+   defined in RFC3744 [RFC3744].  These properties are likely to be
+   protected but the server MAY allow them to be written by appropriate
+   users.
+
+5.1.1.  DAV:notification-URL Property
+
+   Name:  notification-URL
+
+   Namespace:  DAV:
+
+   Purpose:  Identify the URL of the notification collection owned by
+      the associated principal resource.
+
+   Protected:  This property SHOULD be protected.
+
+   PROPFIND behavior:  This property SHOULD NOT be returned by a
+      PROPFIND allprop request (as defined in Section 14.2 of
+      [RFC4918]).
+
+
+
+
+Daboo                   Expires November 21, 2014               [Page 3]
+
+                        WebDAV User Notifications               May 2014
+
+
+   COPY/MOVE behavior:  This property value SHOULD be preserved in COPY
+      and MOVE operations.
+
+   Description:  This property is needed for a client to determine where
+      the notification collection of the current user is located so that
+      processing of notification messages can occur.  If not present,
+      then the associated calendar user is not enabled for notification
+      messages on the server.
+
+   Definition:
+
+   <!ELEMENT notification-URL (DAV:href)>
+
+5.2.  Properties on Notification Resources
+
+   The following new WebDAV properties are defined for notification
+   resources.
+
+5.2.1.  DAV:notificationtype Property
+
+   Name:  notificationtype
+
+   Namespace:  DAV:
+
+   Purpose:  Identify the type of notification of the corresponding
+      resource.
+
+   Protected:  This property MUST be protected.
+
+   PROPFIND behavior:  This property SHOULD NOT be returned by a
+      PROPFIND allprop request (as defined in Section 14.2 of
+      [RFC4918]).
+
+   COPY/MOVE behavior:  This property value MUST be preserved in COPY
+      and MOVE operations.
+
+   Description:  This property allows a client, via a PROPFIND Depth:1
+      request, to quickly find notification messages that the client can
+      handle in a notification collection.  The single child element is
+      the notification resource root element's child defining the
+      notification itself.  This element MUST be empty, though any
+      attributes on the element in the notification resource MUST be
+      present in the property element.
+
+   Definition:
+
+
+
+
+
+
+Daboo                   Expires November 21, 2014               [Page 4]
+
+                        WebDAV User Notifications               May 2014
+
+
+   <!ELEMENT notificationtype ANY>
+   <!-- Child elements are empty but will have appropriate attributes.
+        Any valid notification message child element can appear.-->
+
+5.3.  XML Element Definitions
+
+5.3.1.  DAV:notifications
+
+   Name:  notifications
+
+   Namespace:  DAV:
+
+   Purpose:  Indicates a notification collection.
+
+   Description:  This XML element is used in a DAV:resourcetype element
+      to indicate that the corresponding resource is a notification
+      collection.
+
+   Definition:
+
+   <!ELEMENT notifications EMPTY>
+
+5.3.2.  DAV:notification
+
+   Name:  notification
+
+   Namespace:  DAV:
+
+   Purpose:  Notification message root element.
+
+   Description:  The root element used in notification resources.
+
+   Definition:
+
+   <!ELEMENT notification (dtstamp, XXX) >
+   <!-- Any notification type element can appear after
+        DAV:dtstamp -->
+
+5.3.3.  DAV:dtstamp
+
+   Name:  dtstamp
+
+   Namespace:  DAV:
+
+   Purpose:  Date-time stamp.
+
+   Description:  Contains the date-time stamp corresponding to the
+      creation of a notification message, using the format defined in
+
+
+
+Daboo                   Expires November 21, 2014               [Page 5]
+
+                        WebDAV User Notifications               May 2014
+
+
+      [RFC3339], or the "compact" format without "-" and ":" characters
+      between date and time elements, respectively.
+
+   Definition:
+
+   <!ELEMENT dtstamp (#PCDATA)>
+   <!-- Value is a date-time in UTZ as per [RFC3339] with
+        "compact" format allowed.-->
+
+6.  Notification Definitions
+
+   This section defines a set of common notification types.
+
+6.1.  System Status Notification
+
+   The system status notification is used to convey a URI and/or textual
+   description to the user.  The assumption is that the URI points to a
+   webpage where current system status is described in detail, with the
+   provided description being a summary of that.  A "type" attribute on
+   the element is used to indicate the importance of the current status
+   notification, and has the values "low", "medium" and "high",
+   representing the increasing level of importance of the message
+   respectively.
+
+   Servers might have knowledge of specific calendar user language
+   preferences, in which case it MAY localise the DAV:description value
+   as appropriate based on the calendar user accessing the notification,
+   but if it does, it SHOULD include an xml:lang attribute on the
+   DAV:description element to indicate what language is being used.
+
+6.1.1.  DAV:systemstatus Element Definition
+
+   Name:  systemstatus
+
+   Namespace:  DAV:
+
+   Purpose:  Indicates a system status notification.
+
+   Description:  This XML element is used in a DAV:notification element
+      to describe a system status notification.
+
+   Definition:
+
+
+
+
+
+
+
+
+
+Daboo                   Expires November 21, 2014               [Page 6]
+
+                        WebDAV User Notifications               May 2014
+
+
+   <!ELEMENT systemstatus (DAV:href?, DAV:description?)>
+   <!ATTLIST systemstatus type (low | medium | high) "low">
+
+     <!ELEMENT description CDATA>
+
+   <!-- One of DAV:href of DAV:description MUST be present -->
+
+   Example:  This is an example of the body of a notification resource
+      for an emergency system outage:
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <D:notification xmlns:D="DAV:">
+     <D:dtstamp>2011-12-09T11:12:53-05:00</D:dtstamp>
+     <D:systemstatus type="high">
+       <D:href>http://example.com/emergency_shutdown.html</D:href>
+       <D:description xml:lang='en_US'
+       >Emergency shutdown now</D:description>
+     </D:systemstatus>
+   </D:notification>
+
+   Example:  This is an example of the WebDAV property on the example
+      notification resource above:
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <D:notificationtype xmlns:D="DAV:">
+     <D:systemstatus type="high" />
+   </D:notificationtype>
+
+7.  Security Considerations
+
+   Some notification mechanisms might allow a user to trigger a
+   notification to be delivered to other users (e.g., an invitation to
+   share a calendar).  In such cases servers MUST ensure that suitable
+   limits are placed on the number and frequency of such user generated
+   notifications.
+
+   TBD: More?
+
+8.  IANA Considerations
+
+   This document does not require any actions on the part of IANA.
+
+9.  Acknowledgments
+
+   This specification is the result of discussions between the various
+   Apple calendar server and client teams.
+
+
+
+
+
+Daboo                   Expires November 21, 2014               [Page 7]
+
+                        WebDAV User Notifications               May 2014
+
+
+10.  References
+
+10.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
+              Internet: Timestamps", RFC 3339, July 2002.
+
+   [RFC4918]  Dusseault, L., "HTTP Extensions for Web Distributed
+              Authoring and Versioning (WebDAV)", RFC 4918, June 2007.
+
+   [RFC6352]  Daboo, C., "CardDAV: vCard Extensions to Web Distributed
+              Authoring and Versioning (WebDAV)", RFC 6352, August 2011.
+
+10.2.  Informative References
+
+   [RFC3744]  Clemm, G., Reschke, J., Sedlar, E., and J. Whitehead, "Web
+              Distributed Authoring and Versioning (WebDAV)
+              Access Control Protocol", RFC 3744, May 2004.
+
+   [RFC4791]  Daboo, C., Desruisseaux, B., and L. Dusseault,
+              "Calendaring Extensions to WebDAV (CalDAV)", RFC 4791,
+              March 2007.
+
+Author's Address
+
+   Cyrus Daboo
+   Apple Inc.
+   1 Infinite Loop
+   Cupertino, CA  95014
+   USA
+
+   Email: cyrus@daboo.name
+   URI:   http://www.apple.com/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Daboo                   Expires November 21, 2014               [Page 8]
