@@ -60,8 +60,8 @@
                 <postal>
                     <street>Koenigsstrasse 32</street>
                     <city>Muenster</city>
-                    <region>NRFW</region>
-                    <code>47143</code>
+                    <region>NRW</region>
+                    <code>48143</code>
                     <country>Germany</country>
                 </postal>
                 <email>me@evertpot.com</email>
@@ -71,12 +71,13 @@
         <date/>
         <abstract>
             <t>
-                This specification defines an extension to CalDAV that enables the sharing of calendars between users on a CalDAV server.
+                This specification defines an extension to WebDAV that enables the sharing of collections between users on a WebDAV server.
             </t>
         </abstract>
     </front>
     <middle>
         <section title='Introduction'>
+
             <t>
                 <xref target="RFC4791">CalDAV</xref> provides a way for calendar users to store calendar data and exchange this data via scheduling operations. Based on the <xref target='RFC4918'>WebDAV</xref> protocol, it also includes the ability to manage access to calendar data via the <xref target='RFC3744'>WebDAV ACL</xref> extension.
             </t>
