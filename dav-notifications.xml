@@ -65,8 +65,8 @@
             <t>
                 It is often useful for servers to communicate arbitrary
                 information to the end-users for a WebDAV system, such as a
-                system status, message of the day or changes to changes made
-                to shared resources by other users.
+                system status, message of the day or to notify users of
+                changes that were made to shared resources by other users.
            </t>
            <t>
                This specification defines a generic "notification" mechanism
@@ -81,7 +81,11 @@
             <t>
                 <list style="numbers">
                     <t>Define specific child elements for system status notification, e.g. "server-maintenance-period", "server-read-only-period", "client-upgrade-required".</t>
-                </list>
+                    <t>I would like to propose the possibility of using webdav properties for the full payload of the notification messages. Advantages of this model are that we can now use PROPFIND or WebDAV sync to get the full payload for notifications.</t>
+                    <t>If this is not desired, we should define mimetypes and discuss the Accept header.</t>
+                    <t>Is the usage of dtstamp appropriate? Can we just Last-Modified semantics instead?</t>
+                    <t>Consider simplifying systemstatus. Could we drop the attribute?</li>
+                 </list>
             </t>
         </section>
 
@@ -273,7 +277,6 @@
         </section>
 
         <section title='Security Considerations'>
-            <t>Some notification mechanisms might allow a user to trigger a notification to be delivered to other users (e.g., an invitation to share a calendar). In such cases servers MUST ensure that suitable limits are placed on the number and frequency of such user generated notifications.</t>
             <t>
                 TBD: More?
             </t>
@@ -300,6 +303,23 @@
             &rfc3744;
             &rfc4791;
         </references>
+        <section title='Backwards-compatibility with earlier drafts'>
+            <t>
+                An earlier draft of this specification is already widely
+                deployed among both servers and clients.
+            </t>
+            <t>
+                This specification, informally known as 'caldav-notifications'
+                largely uses the same structure as this specification, but
+                where the "DAV:" xml namespace is used in this specification,
+                the earlier draft uses "http://calendarserver.org/ns/".
+            </t>
+            <t>
+                This makes it possible to create two separate collections for
+                notifications, as each is discovered by the user using their
+                own respective "notification-URL" property on the principal.
+            </t>
+        </section>
         <!--
         <section title='Change History'>
             <t>Changes in -01:
