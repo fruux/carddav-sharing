@@ -52,6 +52,22 @@
                 <uri>http://www.apple.com/</uri>
             </address>
         </author>
+        <author initials="E." surname="Pot" fullname="Evert Pot">
+            <organization abbrev="fruux GmbH">
+                fruux GmbH
+            </organization>
+            <address>
+                <postal>
+                    <street>Koenigsstrasse 32</street>
+                    <city>Muenster</city>
+                    <region>NRFW</region>
+                    <code>47143</code>
+                    <country>Germany</country>
+                </postal>
+                <email>me@evertpot.com</email>
+                <uri>https://fruux.com/</uri>
+            </address>
+        </author>
         <date/>
         <abstract>
             <t>
