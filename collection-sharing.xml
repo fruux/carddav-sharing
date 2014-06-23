@@ -79,13 +79,34 @@
         <section title='Introduction'>
 
             <t>
-                <xref target="RFC4791">CalDAV</xref> provides a way for calendar users to store calendar data and exchange this data via scheduling operations. Based on the <xref target='RFC4918'>WebDAV</xref> protocol, it also includes the ability to manage access to calendar data via the <xref target='RFC3744'>WebDAV ACL</xref> extension.
+                Users of <xref target="RFC4791">CalDAV</xref> and
+                <xref target="RFC6352">CardDAV</xref> often require a
+                mechanism to share a calendar or address book collection
+                with other users.
             </t>
             <t>
-                <xref target='RFC3744'>WebDAV ACL</xref> provides a way to manage fine-grained access controls on WebDAV resources. Whilst this could be used directly to manage sharing of calendars, experience has shown that client developers are averse to using it due to its complexity. Instead a simpler process for sharing calendars is preferred.
+                This specification introduces a mechanism that allows
+                users of WebDAV servers to invite another user to a collection.
+                The invited user can either accept or reject the invite, which
+                is communicated back to the inviter.
+                If the user chooses to accept the invite, the shared collection
+                will then appear in a location on the server that's accessible
+                by the invitee.
             </t>
             <t>
-                This extension defines a way for individual calendar users to share calendars with other users. This is done via an "opt-in" process in which a sharing invite is sent from the sharer to a sharee, allowing the sharee to accept or decline. If the sharee accepts the sharing invite, the shared calendar is made available to them in their own calendar home collection (i.e., alongside their own personal calendars). HTTP POST operations are used to manage the sharing invitations and replies, and WebDAV properties are used to expose the state of shared calendars.
+                There are existing mechanism that address similar use-cases,
+                such as using <xref target='RFC3744'>WebDAV ACL</xref> for
+                fine-grained access control. Experiences has shown that client
+                developers are averse to using it due its complexity. Many
+                implementations have chosen to only use WebDAV ACL for
+                communicating access control information to clients, but not
+                for modification. WebDAV ACL alone also does not provide the
+                means for a user to invite another user.
+            </t>
+            <t>
+                HTTP POST operations are used to manage the sharing invitations
+                and replies, and WebDAV properties are used to expose the state
+                of shared calendars.
             </t>
         </section>
 
@@ -105,34 +126,59 @@
             <t>
                 When XML element types in the namespaces "DAV:" and "urn:ietf:params:xml:ns:caldav" are referenced in this document outside of the context of an XML fragment, the string "DAV:" and "CALDAV:" will be prefixed to the element type names respectively. 
             </t>
-            <t>
-                The namespace "http://calendarserver.org/ns/" is used for XML elements defined in this specification.  When XML element types in that namespace are referenced in this document outside of the context of an XML fragment, the string "CS:" will be prefixed to the element type names. 
-            </t>
             <t>Terms Used:
                 <list style='hanging'>
-                    <t hangText='Sharer'>A calendar user who is sharing a calendar with other calendar users.</t>
-                    <t hangText='Sharee'>A calendar user to whom a calendar has been shared.</t>
-                    <t hangText='Sharing Invite'>A message sent by a sharer to a sharee to indicate the status of a shared calendar.</t>
-                    <t hangText='Sharing Reply'>A message sent by a sharee to a sharer to indicate the status of a shared calendar.</t>
+                    <t hangText='Sharer'>A user who is sharing a collection with other users.</t>
+                    <t hangText='Sharee'>A user to whom a collection has been shared.</t>
+                    <t hangText='Sharing Invite'>A message sent by a sharer to a sharee to indicate the status of a shared collection.</t>
+                    <t hangText='Sharing Reply'>A message sent by a sharee to a sharer to indicate the status of a shared collection.</t>
                 </list>
             </t>
         </section>
          
         <section title='Overview' anchor='overview'>
             <t>
-                This section provides a basic overview of this protocol by way of a simple use case of a sharer sharing a calendar with a single sharee.
+                This section provides a basic overview of this protocol by way
+                of a simple use case of a sharer sharing a collection with a
+                single sharee.
             </t>
             <t>
-                To share a calendar with another user, the sharer's client executes an HTTP POST request against the calendar collection resource for the calendar to be shared. The POST request body will contain details of the calendar user to whom the calendar is to be shared as well as the access right to be granted to them. If the request succeeds, a notification is sent to the sharee with details of the calendar being shared to them.
+                To share a collection with another user, the sharer's client
+                executes an HTTP POST request against the collection resource
+                for the collection to be shared. The POST request body will
+                contain details of the user to whom the collection is to be
+                shared as well as the access right to be granted to them. If
+                the request succeeds, a notification is sent to the sharee
+                with details of the collection being shared to them.
             </t>
             <t>
-                The sharer's client will show the notification to the sharee and present them with the choice to accept or decline the invitation to the shared calendar. If the sharee chooses to decline, then nothing changes for that sharee. If the sharee chooses to accept, then the server automatically creates a new calendar collection resource in the sharee's calendar home collection, and ensures that calendar provides a mapping to the actual shared calendar of the sharer. Thus the shared calendar is available to the sharee as just another calendar in their calendar home. The server enforces the appropriare access privileges for the sharee.
+                The sharer's client will show the notification to the sharee
+                and present them with the choice to accept or decline the
+                invitation to the shared collection. If the sharee chooses to
+                decline, then nothing changes for that sharee. If the sharee
+                chooses to accept, then the server automatically creates a new
+                collection resource in a location that is determined by the
+                server.
+                For example, if a <xref target='RFC4791'>CalDAV</xref> calendar
+                is shared, the server may create the new collection in the
+                sharee's calendar home.
+                The server enforces the appropriare access privileges for the
+                sharee.
             </t>
             <t>
-                At any time, the sharer can inspect properties on the calendar collection being shared, and determine the accept/decline status of each sharee. Additional sharees can be added and existing ones removed. The access privileges for existing sharees can also be changed.
+                At any time, the sharer can inspect properties on the
+                collection being shared, and determine the accept/decline
+                status of each sharee. Additional sharees can be added and
+                existing ones removed. The access privileges for existing
+                sharees can also be changed.
             </t>
             <t>
-                Once a sharee has a shared calendar set to appear in their calendar home collection, they can remove it and decline the sharing invite by simply having their client issue an HTTP DELETE request on the shared calendar collection. That does not delete any calendar data, but rather simply removes the "link" to the sharer's calendar collection and sets the sharee's inviate status to declined.
+                Once a sharee has access to the shared collection, they can
+                remove it and decline the sharing invite by simply having
+                their client issue an HTTP DELETE request on the shared
+                collection. That does not delete any data, but rather simply
+                removes the "link" to the sharer's collection and sets the
+                sharee's invite status to declined.
             </t>
         </section>
         
