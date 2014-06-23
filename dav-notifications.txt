@@ -4,7 +4,9 @@
 
                                                                 C. Daboo
                                                               Apple Inc.
-                                                            May 20, 2014
+                                                                  E. Pot
+                                                              fruux GmbH
+                                                           June 23, 2014
 
 
                        WebDAV: User Notifications
@@ -23,41 +25,41 @@ Table of Contents
    4.  Requirements Overview . . . . . . . . . . . . . . . . . . . .   2
    5.  Notifications . . . . . . . . . . . . . . . . . . . . . . . .   2
      5.1.  Additional Principal Properties . . . . . . . . . . . . .   3
-       5.1.1.  DAV:notification-URL Property . . . . . . . . . . . .   3
+       5.1.1.  DAV:notification-URL Property . . . . . . . . . . . .   4
      5.2.  Properties on Notification Resources  . . . . . . . . . .   4
        5.2.1.  DAV:notificationtype Property . . . . . . . . . . . .   4
      5.3.  XML Element Definitions . . . . . . . . . . . . . . . . .   5
        5.3.1.  DAV:notifications . . . . . . . . . . . . . . . . . .   5
        5.3.2.  DAV:notification  . . . . . . . . . . . . . . . . . .   5
-       5.3.3.  DAV:dtstamp . . . . . . . . . . . . . . . . . . . . .   5
+       5.3.3.  DAV:dtstamp . . . . . . . . . . . . . . . . . . . . .   6
    6.  Notification Definitions  . . . . . . . . . . . . . . . . . .   6
      6.1.  System Status Notification  . . . . . . . . . . . . . . .   6
-       6.1.1.  DAV:systemstatus Element Definition . . . . . . . . .   6
+       6.1.1.  DAV:systemstatus Element Definition . . . . . . . . .   7
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   7
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   8
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
      10.2.  Informative References . . . . . . . . . . . . . . . . .   8
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
+   Appendix A.  Backwards-compatibility with earlier drafts  . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
    It is often useful for servers to communicate arbitrary information
    to the end-users for a WebDAV system, such as a system status,
-   message of the day or changes to changes made to shared resources by
-   other users.
+   message of the day or to notify users of changes that were made to
+   shared resources by other users.
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 1]
+
+                        WebDAV User Notifications              June 2014
+
 
    This specification defines a generic "notification" mechanism that
    allows a server to do that.  Whilst primarily aimed at CalDAV
-
-
-
-Daboo                   Expires November 21, 2014               [Page 1]
-
-                        WebDAV User Notifications               May 2014
-
-
    [RFC4791] and CardDAV [RFC6352] this mechanism has been designed to
    be adaptable to other applications of WebDAV [RFC4918].
 
@@ -66,6 +68,19 @@ Daboo                   Expires November 21, 2014               [Page 1]
    1.  Define specific child elements for system status notification,
        e.g. "server-maintenance-period", "server-read-only-period",
        "client-upgrade-required".
+
+   2.  I would like to propose the possibility of using webdav
+       properties for the full payload of the notification messages.
+       Advantages of this model are that we can now use PROPFIND or
+       WebDAV sync to get the full payload for notifications.
+
+   3.  If this is not desired, we should define mimetypes and discuss
+       the Accept header.
+
+   4.  Is the usage of dtstamp appropriate?  Can we just Last-Modified
+       semantics instead?
+
+   5.  Consider simplifying systemstatus.  Could we drop the attribute?
 
 3.  Conventions Used in This Document
 
@@ -91,6 +106,14 @@ Daboo                   Expires November 21, 2014               [Page 1]
    (Section 5.1.1) property appears on principal resources for those
    principals who are able to receive notifications.  That property
    specifies a single DAV:href element whose content refers to a WebDAV
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 2]
+
+                        WebDAV User Notifications              June 2014
+
+
    collection resource.  Notification "messages" are deposited into this
    collection and can be retrieved by clients and acted on accordingly.
 
@@ -105,14 +128,6 @@ Daboo                   Expires November 21, 2014               [Page 1]
    which represents the type of notification being conveyed in the
    message.  That child element will typically contain additional
    content that describes the notification.
-
-
-
-
-Daboo                   Expires November 21, 2014               [Page 2]
-
-                        WebDAV User Notifications               May 2014
-
 
    Each notification resource has a DAV:notificationtype (Section 5.2.1)
    property which contains as its single child element an empty element
@@ -147,6 +162,14 @@ Daboo                   Expires November 21, 2014               [Page 2]
    protected but the server MAY allow them to be written by appropriate
    users.
 
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 3]
+
+                        WebDAV User Notifications              June 2014
+
+
 5.1.1.  DAV:notification-URL Property
 
    Name:  notification-URL
@@ -161,14 +184,6 @@ Daboo                   Expires November 21, 2014               [Page 2]
    PROPFIND behavior:  This property SHOULD NOT be returned by a
       PROPFIND allprop request (as defined in Section 14.2 of
       [RFC4918]).
-
-
-
-
-Daboo                   Expires November 21, 2014               [Page 3]
-
-                        WebDAV User Notifications               May 2014
-
 
    COPY/MOVE behavior:  This property value SHOULD be preserved in COPY
       and MOVE operations.
@@ -203,6 +218,14 @@ Daboo                   Expires November 21, 2014               [Page 3]
       PROPFIND allprop request (as defined in Section 14.2 of
       [RFC4918]).
 
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 4]
+
+                        WebDAV User Notifications              June 2014
+
+
    COPY/MOVE behavior:  This property value MUST be preserved in COPY
       and MOVE operations.
 
@@ -215,16 +238,6 @@ Daboo                   Expires November 21, 2014               [Page 3]
       present in the property element.
 
    Definition:
-
-
-
-
-
-
-Daboo                   Expires November 21, 2014               [Page 4]
-
-                        WebDAV User Notifications               May 2014
-
 
    <!ELEMENT notificationtype ANY>
    <!-- Child elements are empty but will have appropriate attributes.
@@ -260,6 +273,15 @@ Daboo                   Expires November 21, 2014               [Page 4]
 
    Definition:
 
+
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 5]
+
+                        WebDAV User Notifications              June 2014
+
+
    <!ELEMENT notification (dtstamp, XXX) >
    <!-- Any notification type element can appear after
         DAV:dtstamp -->
@@ -274,14 +296,6 @@ Daboo                   Expires November 21, 2014               [Page 4]
 
    Description:  Contains the date-time stamp corresponding to the
       creation of a notification message, using the format defined in
-
-
-
-Daboo                   Expires November 21, 2014               [Page 5]
-
-                        WebDAV User Notifications               May 2014
-
-
       [RFC3339], or the "compact" format without "-" and ":" characters
       between date and time elements, respectively.
 
@@ -312,6 +326,18 @@ Daboo                   Expires November 21, 2014               [Page 5]
    but if it does, it SHOULD include an xml:lang attribute on the
    DAV:description element to indicate what language is being used.
 
+
+
+
+
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 6]
+
+                        WebDAV User Notifications              June 2014
+
+
 6.1.1.  DAV:systemstatus Element Definition
 
    Name:  systemstatus
@@ -324,19 +350,6 @@ Daboo                   Expires November 21, 2014               [Page 5]
       to describe a system status notification.
 
    Definition:
-
-
-
-
-
-
-
-
-
-Daboo                   Expires November 21, 2014               [Page 6]
-
-                        WebDAV User Notifications               May 2014
-
 
    <!ELEMENT systemstatus (DAV:href?, DAV:description?)>
    <!ATTLIST systemstatus type (low | medium | high) "low">
@@ -368,13 +381,18 @@ Daboo                   Expires November 21, 2014               [Page 6]
 
 7.  Security Considerations
 
-   Some notification mechanisms might allow a user to trigger a
-   notification to be delivered to other users (e.g., an invitation to
-   share a calendar).  In such cases servers MUST ensure that suitable
-   limits are placed on the number and frequency of such user generated
-   notifications.
-
    TBD: More?
+
+
+
+
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 7]
+
+                        WebDAV User Notifications              June 2014
+
 
 8.  IANA Considerations
 
@@ -384,15 +402,6 @@ Daboo                   Expires November 21, 2014               [Page 6]
 
    This specification is the result of discussions between the various
    Apple calendar server and client teams.
-
-
-
-
-
-Daboo                   Expires November 21, 2014               [Page 7]
-
-                        WebDAV User Notifications               May 2014
-
 
 10.  References
 
@@ -420,7 +429,28 @@ Daboo                   Expires November 21, 2014               [Page 7]
               "Calendaring Extensions to WebDAV (CalDAV)", RFC 4791,
               March 2007.
 
-Author's Address
+Appendix A.  Backwards-compatibility with earlier drafts
+
+   An earlier draft of this specification is already widely deployed
+   among both servers and clients.
+
+   This specification, informally known as 'caldav-notifications'
+   largely uses the same structure as this specification, but where the
+   "DAV:" xml namespace is used in this specification, the earlier draft
+   uses "http://calendarserver.org/ns/".
+
+   This makes it possible to create two separate collections for
+   notifications, as each is discovered by the user using their own
+   respective "notification-URL" property on the principal.
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 8]
+
+                        WebDAV User Notifications              June 2014
+
+
+Authors' Addresses
 
    Cyrus Daboo
    Apple Inc.
@@ -432,6 +462,14 @@ Author's Address
    URI:   http://www.apple.com/
 
 
+   Evert Pot
+   fruux GmbH
+   Koenigsstrasse 32
+   Muenster, NRFW  47143
+   Germany
+
+   Email: me@evertpot.com
+   URI:   https://fruux.com/
 
 
 
@@ -445,4 +483,22 @@ Author's Address
 
 
 
-Daboo                   Expires November 21, 2014               [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Daboo & Pot             Expires December 25, 2014               [Page 9]

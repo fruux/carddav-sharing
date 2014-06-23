@@ -84,7 +84,7 @@
                     <t>I would like to propose the possibility of using webdav properties for the full payload of the notification messages. Advantages of this model are that we can now use PROPFIND or WebDAV sync to get the full payload for notifications.</t>
                     <t>If this is not desired, we should define mimetypes and discuss the Accept header.</t>
                     <t>Is the usage of dtstamp appropriate? Can we just Last-Modified semantics instead?</t>
-                    <t>Consider simplifying systemstatus. Could we drop the attribute?</li>
+                    <t>Consider simplifying systemstatus. Could we drop the attribute?</t>
                  </list>
             </t>
         </section>
