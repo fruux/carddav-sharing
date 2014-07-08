@@ -80,8 +80,7 @@
         <section title="Open Issues">
             <t>
                 <list style="numbers">
-                    <t>Is the usage of dtstamp appropriate? Can we just Last-Modified semantics instead?</t>
-                    <t>Consider simplifying systemstatus. Could we drop the attribute?</t>
+                    <t>Simplifying systemstatus. Still go ahead with this? What element name should be used?</t>
                     <t>Is there a valid use-case for the notificationtype MIME attribute?</t>
                     <t>If so, are we ok with clark-notation?</t>
                  </list>
