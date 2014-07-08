@@ -17,7 +17,6 @@
 <?rfc sortrefs="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<?rfc private="Calendar Server Extension"?>
 <rfc ipr="trust200902" docName='webdav-notifications-00'>
     <front>
         <title abbrev="WebDAV User Notifications">WebDAV: User Notifications</title>
@@ -80,7 +79,6 @@
         <section title="Open Issues">
             <t>
                 <list style="numbers">
-                    <t>Define specific child elements for system status notification, e.g. "server-maintenance-period", "server-read-only-period", "client-upgrade-required".</t>
                     <t>I would like to propose the possibility of using webdav properties for the full payload of the notification messages. Advantages of this model are that we can now use PROPFIND or WebDAV sync to get the full payload for notifications.</t>
                     <t>If this is not desired, we should define mimetypes and discuss the Accept header.</t>
                     <t>Is the usage of dtstamp appropriate? Can we just Last-Modified semantics instead?</t>
