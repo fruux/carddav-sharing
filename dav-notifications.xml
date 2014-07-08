@@ -237,13 +237,15 @@
                     <t hangText="Name:">dtstamp</t>
                     <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">Date-time stamp.</t>
-                    <t hangText="Description:">Contains the date-time stamp corresponding to the creation of a notification message, using the format defined in <xref target="RFC3339"/>, or the "compact" format without "-" and ":" characters between date and time elements, respectively.</t>
+                    <t hangText="Description:">DAV:dtstamp is an element whose content MUST conform to the
+                        "date-time" production in <xref target="RFC3339" />.  In addition, an uppercase "T"
+                        character MUST be used to separate date and time, and an uppercase
+                        "Z" character MUST be present.</t>
                     <t hangText="Definition:">
                       <figure>
                         <artwork><![CDATA[
 <!ELEMENT dtstamp (#PCDATA)>
-<!-- Value is a date-time in UTZ as per [RFC3339] with
-     "compact" format allowed.-->]]></artwork>
+<!-- Value is a date-time in UTZ as per [RFC3339] -->]]></artwork>
                       </figure>
                     </t>
                   </list>
@@ -372,9 +374,12 @@
                 the earlier draft uses "http://calendarserver.org/ns/".
             </t>
             <t>
-                This makes it possible to create two separate collections for
-                notifications, as each is discovered by the user using their
-                own respective "notification-URL" property on the principal.
+                It is possible to conform to both that draft and this
+                specification by either creating two different collections, as
+                identified by "notification-URL" in each respective namespace,
+                or alternatively it's possible to use the same resource for
+                both, but use content-negotation using the accept header to
+                ask the server for a specific representation of a notification.
             </t>
         </section>
         <!--
