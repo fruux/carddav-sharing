@@ -80,7 +80,6 @@
         <section title="Open Issues">
             <t>
                 <list style="numbers">
-                    <t>If this is not desired, we should define mimetypes and discuss the Accept header.</t>
                     <t>Is the usage of dtstamp appropriate? Can we just Last-Modified semantics instead?</t>
                     <t>Consider simplifying systemstatus. Could we drop the attribute?</t>
                  </list>
@@ -118,13 +117,29 @@
             <t>Servers MUST prevent clients from adding resources in the notification collection.</t>
             <section title="Mime type" anchor="mime-type">
                 <t>
-                    The "application/webdavnotification+xml" MIME media type MUST
+                    The "application/davnotification+xml" MIME media type MUST
                     be used for transfer of webdav notifications.
+                </t>
+                <t>
+                    A server MAY add the notificationtype parameter to to the
+                    "Content-Type" header in responses. This parameter contains
+                    a serialization of the <xref target="DAV:notificationtype" />
+                    value's top level xml namespace and element, in a format
+                    that's informally known as 'clark notation'.
+                </t>
+                <t>
+                    This value is created by preceeding the element name by the
+                    Namespace-URI enclosed in curly brackets ('{' and '}').
+                </t>
+                <t hangText="Example:">This is an example of the Content-Type header, for the systemstatus notification type:
+                  <figure>
+                      <artwork><![CDATA[Content-Type: application/davnotification+xml notificationtype="{DAV:}systemstatus"]]></artwork>
+                  </figure>
                 </t>
                 <t>
                     HTTP GET requests that expect to receive a webdav
                     notification resource, SHOULD include an "Accept" header
-                    that includes "application/webdavnotification+xml".
+                    that includes "application/davnotification+xml".
                 </t>
                 <t>
                     Requests that do not include this header, SHOULD be
@@ -302,7 +317,7 @@
             </t>
             <list style="hanging">
               <t hangText="Type name">application</t>
-              <t hangText="Subtype name">webdavnotification+xml</t>
+              <t hangText="Subtype name">davnotification+xml</t>
               <t hangText="Required parameters">none</t>
               <t hangText="Optional parameters">"notificationtype" as defined in <xref target="mime-type" />.</t>
               <t hangText="Encoding considerations">Identical to those of "application/xml" as described in <xref target="RFC7303">RFC7303</xref>.</t>
