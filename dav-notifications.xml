@@ -337,6 +337,7 @@
             &rfc3339;
             &rfc4918;
             &rfc6352;
+            &rfc7303;
         </references>
         <references title='Informative References'>
             &rfc3744;
