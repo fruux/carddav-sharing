@@ -318,6 +318,7 @@
                 notifications in an XML format. This media type SHOULD be used
                 for the transfer of webdav notifications.
             </t>
+            <t>
             <list style="hanging">
               <t hangText="Type name">application</t>
               <t hangText="Subtype name">davnotification+xml</t>
@@ -330,7 +331,9 @@
               <t hangText="Applications that use this media type">No known applications currently use this media type.</t>
               <t hangText="Fragment identifier considerations">N/A.</t>
           </list>
+          </t>
           <t>Additional information</t>
+          <t>
           <list style="hanging">
               <t hangText="Deprecated alias names for this type">N/A.</t>
               <t hangText="Magic number(s)">N/A.</t>
@@ -342,6 +345,7 @@
               <t hangText="Author">See the "Authors' Addresses" section of this document.</t>
               <t hangText="Change Controller">IETF</t>
           </list>
+          </t>
         </section>
         <section title='Acknowledgments'>
             <t>
