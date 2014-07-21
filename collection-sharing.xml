@@ -6,7 +6,7 @@
 <!ENTITY rfc4791 PUBLIC '' 'bibxml/reference.RFC.4791.xml'>
 <!ENTITY rfc4918 PUBLIC '' 'bibxml/reference.RFC.4918.xml'>
 <!ENTITY rfc6638 PUBLIC '' 'bibxml/reference.RFC.6638.xml'>
-]> 
+]>
 <?rfc toc="yes"?>
 <?rfc tocdepth="4"?>
 <?rfc strict="yes"?>
@@ -19,7 +19,7 @@
 <?rfc private="Calendar Server Extension"?>
 <rfc ipr="none" docName='caldav-sharing-03'>
     <front>
-        <title abbrev="CalDAV Sharing and Publishing">Shared and Published Calendars in CalDAV</title> 
+        <title abbrev="CalDAV Sharing and Publishing">Shared and Published Calendars in CalDAV</title>
         <author initials="C." surname="Daboo" fullname="Cyrus Daboo">
             <organization abbrev="Apple Inc.">
                 Apple Inc.
@@ -29,7 +29,7 @@
                     <street>1 Infinite Loop</street>
                     <city>Cupertino</city>
                     <region>CA</region>
-                    <code>95014</code> 
+                    <code>95014</code>
                     <country>USA</country>
                 </postal>
                 <email>cyrus@daboo.name</email>
@@ -45,7 +45,7 @@
                     <street>1 Infinite Loop</street>
                     <city>Cupertino</city>
                     <region>CA</region>
-                    <code>95014</code> 
+                    <code>95014</code>
                     <country>USA</country>
                 </postal>
                 <email></email>
@@ -118,13 +118,13 @@
                 </list>
             </t>
         </section>-->
-            
+
         <section title='Conventions Used in This Document'>
             <t>
-                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target='RFC2119' />. 
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target='RFC2119' />.
             </t>
             <t>
-                When XML element types in the namespaces "DAV:" and "urn:ietf:params:xml:ns:caldav" are referenced in this document outside of the context of an XML fragment, the string "DAV:" and "CALDAV:" will be prefixed to the element type names respectively. 
+                When XML element types in the namespaces "DAV:" and "urn:ietf:params:xml:ns:caldav" are referenced in this document outside of the context of an XML fragment, the string "DAV:" and "CALDAV:" will be prefixed to the element type names respectively.
             </t>
             <t>Terms Used:
                 <list style='hanging'>
@@ -135,7 +135,7 @@
                 </list>
             </t>
         </section>
-         
+
         <section title='Overview' anchor='overview'>
             <t>
                 This section provides a basic overview of this protocol by way
@@ -181,13 +181,13 @@
                 sharee's invite status to declined.
             </t>
         </section>
-        
+
         <section title="Notifications">
             <t>
                 In order to facilitate the process of sharing invitations, this specification defines a new generic notification mechanism for CalDAV servers. When this feature is available, a <xref target="CS:notification-URL">CS:notification-URL</xref> property appears on principal resources for those principals who are able to receive notifications. That property specifies a single DAV:href element whose content refers to a WebDAV collection resource. Notification "messages" are deposited into this collection and can be retrieved by clients and acted on accordingly.
             </t>
             <t>
-                The notification collection referenced by the <xref target="CS:notification-URL">CS:notification-URL</xref> property MUST have a DAV:resourcetype property with DAV:collection and <xref target="CS:notification">CS:notification</xref> child elements. 
+                The notification collection referenced by the <xref target="CS:notification-URL">CS:notification-URL</xref> property MUST have a DAV:resourcetype property with DAV:collection and <xref target="CS:notification">CS:notification</xref> child elements.
             </t>
             <t>
                 Notification "messages" are XML documents stored as resources in the notification collection. Each XML document contains a <xref target="CS:notification">CS:notification</xref> element as its root. The root element contains a <xref target="CS:dtstamp">CS:dtstamp</xref> element, and one additional element which represents the type of notification being conveyed in the message. That child element will typically contain additional content that describes the notification.
@@ -211,7 +211,7 @@
                       <t hangText="Protected:">This property SHOULD be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value SHOULD be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This property is needed for a client to determine where the notification collection of the current user is located so that processing of notification messages can occur. If not present, then the associated calendar user is not enabled for notification messages on the server.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -236,7 +236,7 @@
                       <t hangText="Protected:">This property MUST be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This property allows a client, via a PROPFIND Depth:1 request, to quickly find notification messages that the client can handle in a notification collection. The single child element is the notification resource root element's child defining the notification itself. This element MUST be empty, though any attributes on the element in the notification resource MUST be present in the property element.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -280,7 +280,7 @@
                       <t hangText="Protected:">This property MUST be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This WebDAV property is present on a calendar collection resource that has been shared by the owner, or on the calendar collection resources of the sharees of the calendar. It provides a list of users to whom the calendar has been shared, along with the "status" of the sharing invites sent to each user. In addition, servers SHOULD include a CS:organizer XML element on calendar collection resources of the sharees to provide clients with a fast way to determine who the sharer is. A server's local privacy policy may prevent sharees from knowing about other sharees on a shared calendar. If that is so server will not include CS:user XML elements for other sharees.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -300,7 +300,7 @@
                       <t hangText="Protected:">This property MUST be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This WebDAV property is present on a calendar collection resource that can been shared or published. It provides a list of options indicating what sharing modes are allowed as per <xref target="allowed"/>.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -321,7 +321,7 @@
                       <t hangText="Protected:">This property MUST be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
                       <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
-        
+
                       <t hangText="Description:">This WebDAV property is present on a shared calendar collection resource that appears in a sharee's calendar home collection. Its content is a single DAV:href element whose value is the URL of the sharer's calendar being shared.</t>
                       <t hangText="Definition:">
                         <figure>
@@ -359,11 +359,11 @@
                         When the sharee list on a shared calendar is changed, the server MUST send notifications to each sharee to update them on their current sharing status. This is accomplished by sending a <xref target="CS:invite-notification">CS:invite-notification</xref> notification to each sharee.
                     </t>
                     <section title="Example: Successful Sharee Add Request">
-            
+
                         <t>
                           This example shows how to add a single sharee (with calendar user address "mailto:eric@example.com") to a shared calendar with CS:read-write access.
                         </t>
-    
+
                         <figure>
                           <preamble>&gt;&gt; Request &lt;&lt;</preamble>
                           <artwork><![CDATA[
@@ -392,11 +392,11 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         </figure>
                     </section>
                     <section title="Example: Successful Multiple Sharee Change Request">
-            
+
                         <t>
                           This example shows how multiple sharee's can be manipulated in a single request. The sharee with calendar user address "mailto:eric@example.com" has their access downgraded to CS:read, whilst another sharee is removed from the access list entirely.
                         </t>
-    
+
                         <figure>
                           <preamble>&gt;&gt; Request &lt;&lt;</preamble>
                           <artwork><![CDATA[
@@ -472,7 +472,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         <list>
                             <t><xref target="CS:can-be-shared">CS:can-be-shared</xref>: when present indicates that the calendar collection can be shared. When not present, the calendar collection cannot be shared.</t>
                             <t><xref target="CS:can-be-published">CS:can-be-published</xref>: when present indicates that the calendar collection can be published. When not present, the calendar collection cannot be published.</t>
-                        </list>                     
+                        </list>
                     </t>
                     <t>
                         When not present on a calendar collection, sharing or publishing of that calendar is not allowed. Clients SHOULD NOT attempt to use requests to enable sharing or publishing targeted at those calendar collections.
@@ -1057,7 +1057,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
             &rfc3744;
             &rfc4791;
             &rfc4918;
-            &rfc6638; 
+            &rfc6638;
         </references>
 <!--
 <references title='Informative References'>
