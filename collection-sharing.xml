@@ -479,7 +479,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         replying in the DAV:href element, the accept or decline
                         action via the DAV:invite-accepted or
                         DAV:invite-declined elements, the URL of the shared
-                        calendar in the DAV:hosturl element, the unique
+                        collection in the DAV:hosturl element, the unique
                         identifier of the invite to which it is a reply in the
                         DAV:in-reply-to element, and an optional DAV:summary
                         element.
@@ -518,10 +518,10 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         Two levels of access ca be granted by a sharer to any sharee. These are governed by the DAV:access element used in the DAV:invite/DAV:user element that specifies a shared user invite. DAV:access contains a single empty element that defines the type of access granted:
                         <list style="hanging">
                         <t hangText="DAV:read">
-                            When present this indicates that sharees can read calendar data but cannot change it.
+                            When present this indicates that sharees can read information from the collection, but cannot change it.
                         </t>
                         <t hangText="DAV:read-write">
-                            When present this indicates that sharees can read and write calendar data.
+                            When present this indicates that sharees can read and write collection data.
                         </t>
                         </list>
                     </t>
@@ -593,7 +593,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                     <t hangText="Name:">shared-owner</t>
                     <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">Used to indicate that a collection is being shared by the owner.</t>
-                    <t hangText="Description:">This property appears in the DAV:resourcetype property on the calendar collection resource shared by a sharer. See <xref target="properties"/>.</t>
+                    <t hangText="Description:">This property appears in the DAV:resourcetype property on the collection resource shared by a sharer. See <xref target="properties"/>.</t>
                     <t hangText="Definition:">
                       <figure>
                         <artwork><![CDATA[
@@ -689,7 +689,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                 <t>
                   <list style="hanging">
                     <t hangText="Name:">invite-deleted</t>
-                    <t hangText="Namespace:">http://calendarserver.org/ns/</t>
+                    <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">Sharing invite status.</t>
                     <t hangText="Description:">When used in a <xref target="DAV:invite-notification">DAV:invite-notification</xref> element, this element is used to indicate to the sharee that a shared collection has been unshared by the sharer.</t>
                     <t hangText="Definition:">
@@ -754,7 +754,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                   <list style="hanging">
                     <t hangText="Name:">access</t>
                     <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Shared calendar access level.</t>
+                    <t hangText="Purpose:">Shared collection access level.</t>
                     <t hangText="Description:">When used in a <xref target="DAV:user">DAV:user</xref> element, this element is used to indicate the sharing access level granted to the corresponding sharee.</t>
                     <t hangText="Definition:">
                       <figure>
@@ -856,7 +856,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                   <list style="hanging">
                     <t hangText="Name:">hosturl</t>
                     <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Identifies the source URL of a shared calendar.</t>
+                    <t hangText="Purpose:">Identifies the source URL of a shared collection.</t>
                     <t hangText="Description:">Contains a single DAV:href element that refers to the source of a shared collection - i.e., the URL of the collection shared by the sharer.</t>
                     <t hangText="Definition:">
                       <figure>
@@ -1022,7 +1022,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                     <t hangText="Name:">shared-as</t>
                     <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">Identifies a shared collection.</t>
-                    <t hangText="Description:">Returned by the server for a POST request by a sharee accepting a shared collection invite. The DAV:href element specifies the URI of the calendar created by the acceptance.</t>
+                    <t hangText="Description:">Returned by the server for a POST request by a sharee accepting a shared collection invite. The DAV:href element specifies the URI of the collection created by the acceptance.</t>
                     <t hangText="Definition:">
                       <figure>
                         <artwork><![CDATA[
@@ -1081,6 +1081,27 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                     <t>Added CS:shared-url property</t>
                     <t>Clarified that notifications are only required to be sent when sharee status is changed</t>
                 </list>
+            </t>
+        </section>
+        <section title='Backwards compatibility'>
+            <t>
+                This specification is based on an earlier effort, often referred
+                to as 'caldav-sharing'. It is possible to remain compatibile with
+                this specification, but it's important to be aware of a number of
+                changes.
+            </t>
+            <t>
+                The earlier draft uses the http://calendarserver.org/ns/
+                namespace for all its xml elements. This means that any
+                WebDAV property introduced in this specification, may need
+                to have a similar property in the old namespace.
+            </t>
+            <t>
+                XML documentations as sent by POST requests and responses, and
+                resources returned from notifications can be distinguished by
+                the use of the Content-Type and Accept HTTP headers. The earlier
+                draft does not define new mime-types for these, but this
+                specification does.
             </t>
         </section>
     </back>
