@@ -125,6 +125,7 @@
                     <t>Move can-be-shared to an ACL privilege</t>
                     <t>Allow invite-deleted to also appear in DAV:user</t>
                     <t>Cleaning up notifications that have been replied to.</t>
+                    <t>DAV:owner.. do we need to do anything with this?</t>
                  </list>
             </t>
         </section>
@@ -201,8 +202,44 @@
             </t>
             <section title="Invite Notification" anchor='invite-notification'>
                 <t>
-                    TODO
+                    When a sharer adds a new sharee to a collection, or updates
+                    a sharee, an invite notification is added to the sharee's
+                    notification collection.
                 </t>
+                <t>
+                    The notification contains information about the shared
+                    collection, the owner and how to respond to said invitation.
+                </t>
+                <t>
+                    The body of this notification is retrieved with a GET
+                    request. The root element of the notification MUST be
+                    <xref target="DAV:invite-notification">DAV:invite-notification</xref>.
+                </t>
+                <section title="Example: An invite notification">
+                    This is an example of a response to a GET request on a
+                    correct invite notification. Note that several HTTP
+                    response headers have been removed for brevity.
+                    <figure>
+                        <artwork><![CDATA[
+HTTP/1.1 200 OK
+Content-Type: application/davnotification+xml
+Content-Length: xxxx
+
+<D:invite-notification xmlns:D="DAV:">
+    <D:uid>I don't belong here</D:uid>
+    <D:principal>
+        <D:href>/principals/users/evert</D:href>
+    </D:principal>
+    <D:invite-accepted />
+    <D:href>/calendars/users/evert/offdays/</D:href>
+    <D:access><D:read-write /></D:access>
+    <D:prop>
+        <D:displayname>Vacation days!!</D:displayname>
+    </D:prop>
+</D:invite-notification>
+]]></artwork>
+                    </figure>
+                </section>
             </section>
             <section title="Invite Reply" anchor='invite-reply'>
                 <t>
@@ -814,7 +851,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                       <figure>
                         <artwork><![CDATA[
 <!ELEMENT invite-notification (
-            uid, DAV:href,
+            uid, dav:href,
             (invite-noresponse | invite-deleted |
             invite-accepted | invite-declined),
             access, hosturl, organizer,
