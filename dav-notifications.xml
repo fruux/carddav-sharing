@@ -80,9 +80,7 @@
         <section title="Open Issues">
             <t>
                 <list style="numbers">
-                    <t>Simplifying systemstatus. Still go ahead with this? What element name should be used?</t>
-                    <t>Is there a valid use-case for the notificationtype MIME attribute?</t>
-                    <t>If so, are we ok with clark-notation?</t>
+                    <t>None?</t>
                  </list>
             </t>
         </section>
@@ -121,20 +119,9 @@
                     The "application/davnotification+xml" MIME media type MUST
                     be used for transfer of webdav notifications.
                 </t>
-                <t>
-                    A server MAY add the notificationtype parameter to to the
-                    "Content-Type" header in responses. This parameter contains
-                    a serialization of the <xref target="DAV:notificationtype" />
-                    value's top level xml namespace and element, in a format
-                    that's informally known as 'clark notation'.
-                </t>
-                <t>
-                    This value is created by preceeding the element name by the
-                    Namespace-URI enclosed in curly brackets ('{' and '}').
-                </t>
-                <t hangText="Example:">This is an example of the Content-Type header, for the systemstatus notification type:
+                <t hangText="Example:">This is an example of a Content-Type header:
                   <figure>
-                      <artwork><![CDATA[Content-Type: application/davnotification+xml notificationtype="{DAV:}systemstatus"]]></artwork>
+                      <artwork><![CDATA[Content-Type: application/davnotification+xml]]></artwork>
                   </figure>
                 </t>
                 <t>
@@ -323,7 +310,7 @@
               <t hangText="Type name">application</t>
               <t hangText="Subtype name">davnotification+xml</t>
               <t hangText="Required parameters">none</t>
-              <t hangText="Optional parameters">"notificationtype" as defined in <xref target="mime-type" />.</t>
+              <t hangText="Optional parameters">none</t>
               <t hangText="Encoding considerations">Identical to those of "application/xml" as described in <xref target="RFC7303">RFC7303</xref>.</t>
               <t hangText="Security considerations">See <xref target="security" />.</t>
               <t hangText="Interoperability considerations">There are no known interoperability issues.</t>
