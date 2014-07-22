@@ -276,15 +276,15 @@
 
                       <t hangText="Description:">
                           This WebDAV property is present on a collection
-                          resource that can been shared or published. It
-                          provides a list of options indicating what sharing
-                          modes are allowed as per <xref target="allowed"/>.
+                          resource that can be shared. It provides a list of
+                          options indicating what sharing modes are allowed as
+                          per <xref target="allowed"/>.
                       </t>
                       <t hangText="Definition:">
                         <figure>
                           <artwork><![CDATA[
 <!ELEMENT allowed-sharing-modes
-          (can-be-shared?, can-be-published?)>]]></artwork>
+          (can-be-shared?)>]]></artwork>
                         </figure>
                       </t>
                     </list>
@@ -543,14 +543,13 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         disable sharing options on a per-collection basis.
                     </t>
                     <t>
-                        This specification adds a <xref target="DAV:allowed-sharing-modes">DAV:allowed-sharing-modes</xref> WebDAV property which servers can return on collection resources. This property contains XML elements that describe which sharing or publishing capabilities can be supported by the corresponding collection:
+                        This specification adds a <xref target="DAV:allowed-sharing-modes">DAV:allowed-sharing-modes</xref> WebDAV property which servers can return on collection resources. This property contains XML elements that describe which sharing capabilities can be supported by the corresponding collection:
                         <list>
                             <t><xref target="DAV:can-be-shared">DAV:can-be-shared</xref>: when present indicates that the collection can be shared. When not present, the collection cannot be shared.</t>
-                            <t><xref target="DAV:can-be-published">DAV:can-be-published</xref>: when present indicates that the collection can be published. When not present, the collection cannot be published.</t>
                         </list>
                     </t>
                     <t>
-                        When not present on a collection, sharing or publishing of that collection is not allowed. Clients SHOULD NOT attempt to use requests to enable sharing or publishing targeted at those collections.
+                        When not present on a collection, sharing that collection is not allowed. Clients SHOULD NOT attempt to use requests to enable sharing targeted at those collections.
                     </t>
                 </section>
                 <section title="Per-instance WebDAV Properties" anchor="per-instance-data">
@@ -637,22 +636,6 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                       <figure>
                         <artwork><![CDATA[
 <!ELEMENT can-be-shared EMPTY>]]></artwork>
-                      </figure>
-                    </t>
-                  </list>
-                </t>
-            </section>
-            <section title="DAV:can-be-published" anchor="DAV:can-be-published">
-                <t>
-                  <list style="hanging">
-                    <t hangText="Name:">can-be-published</t>
-                    <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Used to indicate that a calendar can be published.</t>
-                    <t hangText="Description:">This element indicates that a calendar can be published to anyone. See <xref target="DAV:allowed-sharing-modes"/></t>
-                    <t hangText="Definition:">
-                      <figure>
-                        <artwork><![CDATA[
-<!ELEMENT can-be-published EMPTY>]]></artwork>
                       </figure>
                     </t>
                   </list>
