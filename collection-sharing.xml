@@ -5,6 +5,7 @@
 <!ENTITY rfc3744 PUBLIC '' 'bibxml/reference.RFC.3744.xml'>
 <!ENTITY rfc4791 PUBLIC '' 'bibxml/reference.RFC.4791.xml'>
 <!ENTITY rfc4918 PUBLIC '' 'bibxml/reference.RFC.4918.xml'>
+<!ENTITY rfc6352 PUBLIC '' 'bibxml/reference.RFC.6352.xml'>
 <!ENTITY rfc6638 PUBLIC '' 'bibxml/reference.RFC.6638.xml'>
 ]>
 <?rfc toc="yes"?>
@@ -196,8 +197,8 @@
         <section title="Notification Definitions">
             <t>
                 In order to facilitate the process of sharing invitations, this
-                specification uses <xref target="dav-notifications">WebDAV
-                notifications</xref>, and defines several new notification
+                specification uses <!-- <xref target="dav-notifications">-->WebDAV
+                notifications<!-- </xref> -->, and defines several new notification
                 types.
             </t>
             <section title="Invite Notification" anchor='invite-notification'>
@@ -216,9 +217,12 @@
                     <xref target="DAV:invite-notification">DAV:invite-notification</xref>.
                 </t>
                 <section title="Example: An invite notification">
-                    This is an example of a response to a GET request on a
-                    correct invite notification. Note that several HTTP
-                    response headers have been removed for brevity.
+                    <t>
+                        This is an example of a response to a GET request on a
+                        correct invite notification. Note that several HTTP
+                        response headers have been removed for brevity.
+                    </t>
+                    <t>
                     <figure>
                         <artwork><![CDATA[
 HTTP/1.1 200 OK
@@ -239,6 +243,7 @@ Content-Length: xxxx
 </D:invite-notification>
 ]]></artwork>
                     </figure>
+                    </t>
                 </section>
             </section>
             <section title="Invite Reply" anchor='invite-reply'>
@@ -1083,6 +1088,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
             &rfc3744;
             &rfc4791;
             &rfc4918;
+            &rfc6352;
             &rfc6638;
         </references>
 <!--
