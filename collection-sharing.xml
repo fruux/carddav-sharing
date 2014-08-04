@@ -114,8 +114,6 @@
         <section title="Open Issues">
             <t>
                 <list style="numbers">
-                    <t>DAV:shared-owner, DAV:shared. Why is this in resourcetype?</t>
-                    <t>COPY behavior of DAV:invite is probably incorrect.</t>
                     <t>Replying to invites can't happen on the calendar home, suggest to reply using the resource URI of the notification being replied to.</t>
                     <t>Doing this would allow dropping in-reply-to. An url is already an ID.</t>
                     <t>Consider removing DAV:href from in-reply-to as well. Should contain sharee, but seems unneeded.</t>
@@ -126,7 +124,6 @@
                     <t>Move can-be-shared to an ACL privilege</t>
                     <t>Allow invite-deleted to also appear in DAV:user</t>
                     <t>Cleaning up notifications that have been replied to.</t>
-                    <t>DAV:owner.. do we need to do anything with this?</t>
                  </list>
             </t>
         </section>
@@ -280,7 +277,7 @@ Content-Length: xxxx
                       <t hangText="Purpose:">Used to show to whom a calendar has been shared.</t>
                       <t hangText="Protected:">This property MUST be protected.</t>
                       <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
-                      <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
+                      <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in MOVE operations, but MUST NOT be preserved in COPY operations.</t>
 
                       <t hangText="Description:">
                           This WebDAV property is present on a collection
