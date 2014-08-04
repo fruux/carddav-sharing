@@ -115,7 +115,6 @@
             <t>
                 <list style="numbers">
                     <t>Replying to invites can't happen on the calendar home, suggest to reply using the resource URI of the notification being replied to.</t>
-                    <t>Doing this would allow dropping in-reply-to. An url is already an ID.</t>
                     <t>Consider removing DAV:href from in-reply-to as well. Should contain sharee, but seems unneeded.</t>
                     <t>Need mime-type for POST request xml bodies.</t>
                     <t>DAV:hosturl should probably be DAV:shared-url.</t>
@@ -226,7 +225,6 @@ Content-Type: application/davnotification+xml
 Content-Length: xxxx
 
 <D:invite-notification xmlns:D="DAV:">
-    <D:uid>I don't belong here</D:uid>
     <D:principal>
         <D:href>/principals/users/evert</D:href>
     </D:principal>
@@ -482,30 +480,39 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                     <t>
                         When a sharee is invited to a shared collection they
                         can accept or decline the invite by issuing a POST
-                        request to the sharee's notification collection
-                        resource. The POST request MUST contain an XML
+                        request to the resource URI for the invitation
+                        notification.  The POST request MUST contain an XML
                         document as its body with the root element being
                         <xref target="DAV:invite-reply">DAV:invite-reply</xref>.
                     </t>
                     <t>
                         The <xref target="DAV:invite-reply">DAV:invite-reply</xref>
-                        element in the POST request specifies the sharee who is
-                        replying in the DAV:href element, the accept or decline
-                        action via the DAV:invite-accepted or
-                        DAV:invite-declined elements, the URL of the shared
-                        collection in the DAV:hosturl element, the unique
-                        identifier of the invite to which it is a reply in the
-                        DAV:in-reply-to element, and an optional DAV:summary
-                        element.
+                        element in the POST request specifies the accept or
+                        decline action via the DAV:invite-accepted or
+                        DAV:invite-declined elements, and an optional
+                        DAV:summary element. IF the invite was accepted, the
+                        body MUST also contain a <xref target="DAV:create-as">
+                        DAV:create-as</xref> element. This element contains a
+                        single DAV:href element, which content is a URI that
+                        will be used as the target url for the new instance of
+                        the shared resource.
                     </t>
                     <t>
-                        The response to a POST request that accepts a shared
-                        collection invite MUST be an XML document containing
-                        <xref target="DAV:shared-as">DAV:shared-as</xref> as its
-                        root element. That root element contains a single
-                        DAV:href element whose content is the URI of the shared
-                        collection somewhere on the server that the sharee has
-                        access to.
+                        All usual preconditions for creating a resource at the
+                        DAV:create-as target url need to be taken into
+                        considerations.
+                    </t>
+                    <t>
+                        Note that some servers may restrict where certain types
+                        of collection resources may be created. A CalDAV server
+                        for instance, may only allow calendars to be created in
+                        collections identified by the calendar-home-set WebDAV
+                        property.
+                    </t>
+                    <t>
+                        A successful response to this POST request should
+                        contain a 201 status code. It's response body is
+                        undefined.
                     </t>
                     <t>
                         When the sharee replies to an invite, the server
@@ -641,7 +648,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                     <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">A WebDAV ACL privilege to control sharing.</t>
                     <t hangText="Description:">
-                        This element represents a <xref target="rfc3744">WebDAV
+                        This element represents a <xref target="RFC3744">WebDAV
                         ACL privilege</xref>, and indicates that the current
                         principal is allowed to share the collection on which
                         it is defined.
@@ -839,22 +846,6 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                   </list>
                 </t>
             </section>
-            <section title="DAV:uid">
-                <t>
-                  <list style="hanging">
-                    <t hangText="Name:">uid</t>
-                    <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Unique identifier.</t>
-                    <t hangText="Description:">A unique identifier for an invitation to a collection.</t>
-                    <t hangText="Definition:">
-                      <figure>
-                        <artwork><![CDATA[
-<!ELEMENT uid (#PCDATA)>]]></artwork>
-                      </figure>
-                    </t>
-                  </list>
-                </t>
-            </section>
             <section title="DAV:hosturl">
                 <t>
                   <list style="hanging">
@@ -949,23 +940,25 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         <artwork><![CDATA[
 <!ELEMENT invite-reply (DAV:href,
                         (invite-accepted | invite-declined),
-                        hosturl, in-reply-to, summary?>]]></artwork>
+                        hosturl, create-as?, summary?>]]></artwork>
                       </figure>
                     </t>
                   </list>
                 </t>
             </section>
-            <section title="DAV:in-reply-to">
+            <section title="DAV:create-as" anchor="DAV:create-as">
                 <t>
                   <list style="hanging">
-                    <t hangText="Name:">in-reply-to</t>
+                    <t hangText="Name:">create-as</t>
                     <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Unique identifier.</t>
-                    <t hangText="Description:">Specifies the unique identifier of the inviate message that this notification message is a reply to.</t>
+                    <t hangText="Purpose:">The target url for the new resource.</t>
+                    <t hangText="Description:">
+                        When a user accepts an invitation to share a collection, this URI will be used to create the new shared resource.
+                    </t>
                     <t hangText="Definition:">
                       <figure>
                         <artwork><![CDATA[
-<!ELEMENT in-reply-to (#PCDATA)>]]></artwork>
+<!ELEMENT create-as (DAV:href)>]]></artwork>
                       </figure>
                     </t>
                   </list>
