@@ -114,12 +114,8 @@
         <section title="Open Issues">
             <t>
                 <list style="numbers">
-                    <t>Replying to invites can't happen on the calendar home, suggest to reply using the resource URI of the notification being replied to.</t>
-                    <t>Doing this would allow dropping in-reply-to. An url is already an ID.</t>
-                    <t>Consider removing DAV:href from in-reply-to as well. Should contain sharee, but seems unneeded.</t>
+                    <t>Remove uid, in-reply-to.</t>
                     <t>Need mime-type for POST request xml bodies.</t>
-                    <t>DAV:hosturl should probably be DAV:shared-url.</t>
-                    <t>DAV:summary should probably be DAV:description</t>
                     <t>DAV:common-name should probably DAV:displayname</t>
                     <t>Allow invite-deleted to also appear in DAV:user</t>
                     <t>Cleaning up notifications that have been replied to.</t>
@@ -235,6 +231,7 @@ Content-Length: xxxx
     <D:access><D:read-write /></D:access>
     <D:prop>
         <D:displayname>Vacation days!!</D:displayname>
+        <D:resourcetype><D:collection /></D:resourcetype>
     </D:prop>
 </D:invite-notification>
 ]]></artwork>
@@ -428,7 +425,7 @@ Content-Length: xxxx
   <D:set>
     <D:href>mailto:eric@example.com</D:href>
     <D:common-name>Eric York</D:common-name>
-    <D:summary>Shared workspace</D:summary>
+    <D:description>Shared workspace</D:description>
     <D:read-write />
   </D:set>
 </D:share>]]></artwork>
@@ -459,7 +456,7 @@ Content-Length: xxxx
 <D:share xmlns:D="DAV:">
   <D:set>
     <D:href>mailto:eric@example.com</D:href>
-    <D:summary>Shared workspace</D:summary>
+    <D:description>Shared workspace</D:description>
     <D:read-write />
   </D:set>
   <D:remove>
@@ -495,8 +492,8 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         DAV:invite-declined elements, the URL of the shared
                         collection in the DAV:hosturl element, the unique
                         identifier of the invite to which it is a reply in the
-                        DAV:in-reply-to element, and an optional DAV:summary
-                        element.
+                        DAV:in-reply-to element, and an optional
+                        DAV:description element.
                     </t>
                     <t>
                         The response to a POST request that accepts a shared
@@ -667,7 +664,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         <artwork><![CDATA[
 <!ELEMENT user (DAV:href, common-name?, (invite-noresponse |
                 invite-accepted | invite-declined | invite-invalid),
-                access, summary?)>]]></artwork>
+                access, description?)>]]></artwork>
                       </figure>
                     </t>
                   </list>
@@ -801,17 +798,17 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                   </list>
                 </t>
             </section>
-            <section title="DAV:summary">
+            <section title="DAV:description">
                 <t>
                   <list style="hanging">
-                    <t hangText="Name:">summary</t>
+                    <t hangText="Name:">description</t>
                     <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">Summary or title of shared collection.</t>
                     <t hangText="Description:">A brief description of a shared collection. This can be used by sharers to communicate the nature of a shared collection to sharees, as well as used by sharees to indicate back to the sharer how each sharee is refering to the shared collection.</t>
                     <t hangText="Definition:">
                       <figure>
                         <artwork><![CDATA[
-<!ELEMENT summary (#PCDATA)>]]></artwork>
+<!ELEMENT description (#PCDATA)>]]></artwork>
                       </figure>
                     </t>
                   </list>
@@ -831,8 +828,8 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
             uid, dav:href,
             (invite-noresponse | invite-deleted |
             invite-accepted | invite-declined),
-            access, hosturl, organizer,
-            summary?,
+            access, organizer,
+            description?,
 >]]></artwork>
                       </figure>
                     </t>
@@ -850,22 +847,6 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                       <figure>
                         <artwork><![CDATA[
 <!ELEMENT uid (#PCDATA)>]]></artwork>
-                      </figure>
-                    </t>
-                  </list>
-                </t>
-            </section>
-            <section title="DAV:hosturl">
-                <t>
-                  <list style="hanging">
-                    <t hangText="Name:">hosturl</t>
-                    <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Identifies the source URL of a shared collection.</t>
-                    <t hangText="Description:">Contains a single DAV:href element that refers to the source of a shared collection - i.e., the URL of the collection shared by the sharer.</t>
-                    <t hangText="Definition:">
-                      <figure>
-                        <artwork><![CDATA[
-<!ELEMENT hosturl (DAV:href)>]]></artwork>
                       </figure>
                     </t>
                   </list>
@@ -949,7 +930,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         <artwork><![CDATA[
 <!ELEMENT invite-reply (DAV:href,
                         (invite-accepted | invite-declined),
-                        hosturl, in-reply-to, summary?>]]></artwork>
+                        in-reply-to, description?>]]></artwork>
                       </figure>
                     </t>
                   </list>
@@ -997,7 +978,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                     <t hangText="Definition:">
                       <figure>
                         <artwork><![CDATA[
-<!ELEMENT set (DAV:href, common-name?, summary?,
+<!ELEMENT set (DAV:href, common-name?, description?,
                (read | read-write)>]]></artwork>
                       </figure>
                     </t>
