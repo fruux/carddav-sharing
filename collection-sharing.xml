@@ -121,7 +121,6 @@
                     <t>DAV:hosturl should probably be DAV:shared-url.</t>
                     <t>DAV:summary should probably be DAV:description</t>
                     <t>DAV:common-name should probably DAV:displayname</t>
-                    <t>Move can-be-shared to an ACL privilege</t>
                     <t>Allow invite-deleted to also appear in DAV:user</t>
                     <t>Cleaning up notifications that have been replied to.</t>
                  </list>
@@ -298,32 +297,6 @@ Content-Length: xxxx
                         <figure>
                           <artwork><![CDATA[
 <!ELEMENT invite (organizer?, user*)>]]></artwork>
-                        </figure>
-                      </t>
-                    </list>
-                  </t>
-                </section>
-                <section title="DAV:allowed-sharing-modes Property" anchor="DAV:allowed-sharing-modes">
-                  <t>
-                    <list style="hanging">
-                      <t hangText="Name:">allowed-sharing-modes</t>
-                      <t hangText="Namespace:">DAV:</t>
-                      <t hangText="Purpose:">Used to show which modes of sharing are supported on a calendar collection.</t>
-                      <t hangText="Protected:">This property MUST be protected.</t>
-                      <t hangText="PROPFIND behavior:">This property SHOULD NOT be returned by a PROPFIND allprop request (as defined in Section 14.2 of <xref target="RFC4918"/>).</t>
-                      <t hangText="COPY/MOVE behavior:">This property value MUST be preserved in COPY and MOVE operations.</t>
-
-                      <t hangText="Description:">
-                          This WebDAV property is present on a collection
-                          resource that can be shared. It provides a list of
-                          options indicating what sharing modes are allowed as
-                          per <xref target="allowed"/>.
-                      </t>
-                      <t hangText="Definition:">
-                        <figure>
-                          <artwork><![CDATA[
-<!ELEMENT allowed-sharing-modes
-          (can-be-shared?)>]]></artwork>
                         </figure>
                       </t>
                     </list>
@@ -572,25 +545,6 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         </list>
                     </t>
                 </section>
-                <section title="Allowing or Disallowing Sharing" anchor="allowed">
-                    <t>
-                        Servers MAY support sharing on a per-collections basis
-                        - e.g., they could treat some collections as always
-                        private (cannot be shared) or always public (always
-                        shared). As a result clients need a way to determine
-                        which collection could be shared so they can enable or
-                        disable sharing options on a per-collection basis.
-                    </t>
-                    <t>
-                        This specification adds a <xref target="DAV:allowed-sharing-modes">DAV:allowed-sharing-modes</xref> WebDAV property which servers can return on collection resources. This property contains XML elements that describe which sharing capabilities can be supported by the corresponding collection:
-                        <list>
-                            <t><xref target="DAV:can-be-shared">DAV:can-be-shared</xref>: when present indicates that the collection can be shared. When not present, the collection cannot be shared.</t>
-                        </list>
-                    </t>
-                    <t>
-                        When not present on a collection, sharing that collection is not allowed. Clients SHOULD NOT attempt to use requests to enable sharing targeted at those collections.
-                    </t>
-                </section>
                 <section title="Per-instance WebDAV Properties" anchor="per-instance-data">
                     <t>
                         Servers MUST support "per-instance" WebDAV properties
@@ -631,6 +585,22 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
             </section>
         </section>
 
+        <section title="Sharing privileges">
+            <t>
+                Servers MAY support sharing on a per-collections basis.
+                This section defines a "DAV:share"
+                <xref target="RFC3744">WebDAV Access Control (ACL)</xref>
+                privilege for use on collections that may be shared.
+            </t>
+            <t>
+                This privilege MUST be non-abstract and MAY be protected.
+                This privilege MUST appear in the DAV:supported-privilege-set
+                property for collections that may be shared. In addition, it
+                MUST appear in the DAV:current-user-privilege-set, if the user
+                is allowed to share the collection.
+            </t>
+        </section>
+
         <section title='XML Element Definitions'>
             <section title="DAV:shared-owner" anchor="DAV:shared-owner">
                 <t>
@@ -664,17 +634,22 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                   </list>
                 </t>
             </section>
-            <section title="DAV:can-be-shared" anchor="DAV:can-be-shared">
+            <section title="DAV:share" anchor="DAV:share">
                 <t>
                   <list style="hanging">
-                    <t hangText="Name:">can-be-shared</t>
+                    <t hangText="Name:">share</t>
                     <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Used to indicate that a collection can be shared.</t>
-                    <t hangText="Description:">This element indicates that a collection can be shared with other users. See <xref target="DAV:allowed-sharing-modes"/></t>
+                    <t hangText="Purpose:">A WebDAV ACL privilege to control sharing.</t>
+                    <t hangText="Description:">
+                        This element represents a <xref target="rfc3744">WebDAV
+                        ACL privilege</xref>, and indicates that the current
+                        principal is allowed to share the collection on which
+                        it is defined.
+                    </t>
                     <t hangText="Definition:">
                       <figure>
                         <artwork><![CDATA[
-<!ELEMENT can-be-shared EMPTY>]]></artwork>
+<!ELEMENT share EMPTY>]]></artwork>
                       </figure>
                     </t>
                   </list>
