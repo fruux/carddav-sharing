@@ -638,7 +638,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                     <t hangText="Namespace:">DAV:</t>
                     <t hangText="Purpose:">A WebDAV ACL privilege to control sharing.</t>
                     <t hangText="Description:">
-                        This element represents a <xref target="rfc3744">WebDAV
+                        This element represents a <xref target="RFC3744">WebDAV
                         ACL privilege</xref>, and indicates that the current
                         principal is allowed to share the collection on which
                         it is defined.
@@ -952,7 +952,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                   </list>
                 </t>
             </section>
-            <section title="DAV:share" anchor="DAV:share">
+            <section title="DAV:share">
                 <t>
                   <list style="hanging">
                     <t hangText="Name:">share</t>
