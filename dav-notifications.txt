@@ -4,9 +4,9 @@
 
 Network Working Group                                           C. Daboo
 Internet-Draft                                                Apple Inc.
-Expires: February 6, 2015                                         E. Pot
+Expires: February 20, 2015                                        E. Pot
                                                               fruux GmbH
-                                                          August 5, 2014
+                                                         August 19, 2014
 
 
                        WebDAV: User Notifications
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 6, 2015.
+   This Internet-Draft will expire on February 20, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 1]
+Daboo & Pot             Expires February 20, 2015               [Page 1]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 2]
+Daboo & Pot             Expires February 20, 2015               [Page 2]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
@@ -165,7 +165,7 @@ Internet-Draft          WebDAV User Notifications            August 2014
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 3]
+Daboo & Pot             Expires February 20, 2015               [Page 3]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
@@ -221,7 +221,7 @@ Internet-Draft          WebDAV User Notifications            August 2014
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 4]
+Daboo & Pot             Expires February 20, 2015               [Page 4]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
@@ -277,7 +277,7 @@ Internet-Draft          WebDAV User Notifications            August 2014
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 5]
+Daboo & Pot             Expires February 20, 2015               [Page 5]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
@@ -333,7 +333,7 @@ Internet-Draft          WebDAV User Notifications            August 2014
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 6]
+Daboo & Pot             Expires February 20, 2015               [Page 6]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
@@ -389,17 +389,14 @@ Internet-Draft          WebDAV User Notifications            August 2014
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 7]
+Daboo & Pot             Expires February 20, 2015               [Page 7]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
 
    <!ELEMENT systemstatus (DAV:href?, DAV:description?)>
    <!ATTLIST systemstatus type (low | medium | high) "low">
-
-     <!ELEMENT description CDATA>
-
-   <!-- One of DAV:href of DAV:description MUST be present -->
+   <!-- One of DAV:href or DAV:description MUST be present -->
 
    Example:  This is an example of the body of a notification resource
       for an emergency system outage:
@@ -409,8 +406,9 @@ Internet-Draft          WebDAV User Notifications            August 2014
      <D:dtstamp>2011-12-09T11:12:53-05:00</D:dtstamp>
      <D:systemstatus type="high">
        <D:href>http://example.com/emergency_shutdown.html</D:href>
-       <D:description xml:lang='en_US'
-       >Emergency shutdown now</D:description>
+       <D:description xml:lang='en_US'>
+           Emergency shutdown now
+       </D:description>
      </D:systemstatus>
    </D:notification>
 
@@ -443,14 +441,14 @@ Internet-Draft          WebDAV User Notifications            August 2014
    Encoding considerations:  Identical to those of "application/xml" as
       described in RFC7303 [RFC7303].
 
+   Security considerations:  See Section 7.
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 8]
+
+Daboo & Pot             Expires February 20, 2015               [Page 8]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
-
-   Security considerations:  See Section 7.
 
    Interoperability considerations:  There are no known interoperability
       issues.
@@ -498,16 +496,15 @@ Internet-Draft          WebDAV User Notifications            August 2014
    [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
               Internet: Timestamps", RFC 3339, July 2002.
 
+   [RFC4918]  Dusseault, L., "HTTP Extensions for Web Distributed
+              Authoring and Versioning (WebDAV)", RFC 4918, June 2007.
 
 
 
-Daboo & Pot             Expires February 6, 2015                [Page 9]
+Daboo & Pot             Expires February 20, 2015               [Page 9]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
-
-   [RFC4918]  Dusseault, L., "HTTP Extensions for Web Distributed
-              Authoring and Versioning (WebDAV)", RFC 4918, June 2007.
 
    [RFC6352]  Daboo, C., "CardDAV: vCard Extensions to Web Distributed
               Authoring and Versioning (WebDAV)", RFC 6352, August 2011.
@@ -557,7 +554,10 @@ Authors' Addresses
 
 
 
-Daboo & Pot             Expires February 6, 2015               [Page 10]
+
+
+
+Daboo & Pot             Expires February 20, 2015              [Page 10]
 
 Internet-Draft          WebDAV User Notifications            August 2014
 
@@ -613,4 +613,4 @@ Internet-Draft          WebDAV User Notifications            August 2014
 
 
 
-Daboo & Pot             Expires February 6, 2015               [Page 11]
+Daboo & Pot             Expires February 20, 2015              [Page 11]
