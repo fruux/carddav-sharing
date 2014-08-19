@@ -845,7 +845,6 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                   </list>
                 </t>
             </section>
-<<<<<<< HEAD
             <section title="DAV:hosturl">
                 <t>
                   <list style="hanging">
@@ -857,19 +856,6 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                       <figure>
                         <artwork><![CDATA[
 <!ELEMENT hosturl (DAV:href)>]]></artwork>
-=======
-            <section title="DAV:uid">
-                <t>
-                  <list style="hanging">
-                    <t hangText="Name:">uid</t>
-                    <t hangText="Namespace:">DAV:</t>
-                    <t hangText="Purpose:">Unique identifier.</t>
-                    <t hangText="Description:">A unique identifier for an invitation to a collection.</t>
-                    <t hangText="Definition:">
-                      <figure>
-                        <artwork><![CDATA[
-<!ELEMENT uid (#PCDATA)>]]></artwork>
->>>>>>> master
                       </figure>
                     </t>
                   </list>
@@ -953,11 +939,7 @@ Date: Sat, 11 Nov 2006 09:32:12 GMT]]></artwork>
                         <artwork><![CDATA[
 <!ELEMENT invite-reply (DAV:href,
                         (invite-accepted | invite-declined),
-<<<<<<< HEAD
                         hosturl, create-as?, summary?>]]></artwork>
-=======
-                        in-reply-to, description?>]]></artwork>
->>>>>>> master
                       </figure>
                     </t>
                   </list>
