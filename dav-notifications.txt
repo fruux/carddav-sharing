@@ -4,9 +4,9 @@
 
 Network Working Group                                           C. Daboo
 Internet-Draft                                                Apple Inc.
-Expires: January 23, 2015                                         E. Pot
+Expires: February 20, 2015                                        E. Pot
                                                               fruux GmbH
-                                                           July 22, 2014
+                                                         August 19, 2014
 
 
                        WebDAV: User Notifications
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 23, 2015.
+   This Internet-Draft will expire on February 20, 2015.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 1]
+Daboo & Pot             Expires February 20, 2015               [Page 1]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 2]
+Daboo & Pot             Expires February 20, 2015               [Page 2]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
 3.  Conventions Used in This Document
@@ -165,9 +165,9 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 3]
+Daboo & Pot             Expires February 20, 2015               [Page 3]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
    the notification collection looking for new notification resources.
@@ -190,13 +190,13 @@ Internet-Draft          WebDAV User Notifications              July 2014
 5.1.  Mime type
 
    The "application/davnotification+xml" MIME media type MUST be used
-   for transfer of webdav notifications.
+   for transfer of WebDAV notifications.
 
    This is an example of a Content-Type header:
 
    Content-Type: application/davnotification+xml
 
-   HTTP GET requests that expect to receive a webdav notification
+   HTTP GET requests that expect to receive a WebDAV notification
    resource, SHOULD include an "Accept" header that includes
    "application/davnotification+xml".
 
@@ -221,9 +221,9 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 4]
+Daboo & Pot             Expires February 20, 2015               [Page 4]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
    Protected:  This property SHOULD be protected.
@@ -238,7 +238,7 @@ Internet-Draft          WebDAV User Notifications              July 2014
    Description:  This property is needed for a client to determine where
       the notification collection of the current user is located so that
       processing of notification messages can occur.  If not present,
-      then the associated calendar user is not enabled for notification
+      then the associated principal is not enabled for notification
       messages on the server.
 
    Definition:
@@ -277,9 +277,9 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 5]
+Daboo & Pot             Expires February 20, 2015               [Page 5]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
       attributes on the element in the notification resource MUST be
@@ -333,9 +333,9 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 6]
+Daboo & Pot             Expires February 20, 2015               [Page 6]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
    Purpose:  Date-time stamp.
@@ -356,20 +356,20 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 6.1.  System Status Notification
 
-   The system status notification is used to convey a URI and/or textual
-   description to the user.  The assumption is that the URI points to a
-   webpage where current system status is described in detail, with the
-   provided description being a summary of that.  A "type" attribute on
-   the element is used to indicate the importance of the current status
-   notification, and has the values "low", "medium" and "high",
-   representing the increasing level of importance of the message
-   respectively.
+   The system status notification is used to convey an URI and/or
+   textual description to the user.  The assumption is that the URI
+   points to a webpage where the current system status is described in
+   detail, with the provided description being a summary of that.  A
+   "type" attribute on the element is used to indicate the importance of
+   the current status notification, and has the values "low", "medium"
+   and "high", representing the increasing level of importance of the
+   message respectively.
 
-   Servers might have knowledge of specific calendar user language
-   preferences, in which case it MAY localise the DAV:description value
-   as appropriate based on the calendar user accessing the notification,
-   but if it does, it SHOULD include an xml:lang attribute on the
-   DAV:description element to indicate what language is being used.
+   Servers might have knowledge of an agent's language preferences, in
+   which case it MAY localise the DAV:description value as appropriate
+   based on the calendar user accessing the notification, but if it
+   does, it SHOULD include an xml:lang attribute on the DAV:description
+   element to indicate what language is being used.
 
 6.1.1.  DAV:systemstatus Element Definition
 
@@ -389,17 +389,14 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 7]
+Daboo & Pot             Expires February 20, 2015               [Page 7]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
    <!ELEMENT systemstatus (DAV:href?, DAV:description?)>
    <!ATTLIST systemstatus type (low | medium | high) "low">
-
-     <!ELEMENT description CDATA>
-
-   <!-- One of DAV:href of DAV:description MUST be present -->
+   <!-- One of DAV:href or DAV:description MUST be present -->
 
    Example:  This is an example of the body of a notification resource
       for an emergency system outage:
@@ -409,8 +406,9 @@ Internet-Draft          WebDAV User Notifications              July 2014
      <D:dtstamp>2011-12-09T11:12:53-05:00</D:dtstamp>
      <D:systemstatus type="high">
        <D:href>http://example.com/emergency_shutdown.html</D:href>
-       <D:description xml:lang='en_US'
-       >Emergency shutdown now</D:description>
+       <D:description xml:lang='en_US'>
+           Emergency shutdown now
+       </D:description>
      </D:systemstatus>
    </D:notification>
 
@@ -428,39 +426,39 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 8.  IANA Considerations
 
-   This document defines a MIME media type for use of webdav
+   This document defines a MIME media type for use of WebDAV
    notifications in an XML format.  This media type SHOULD be used for
-   the transfer of webdav notifications.
+   the transfer of WebDAV notifications.
 
-   Type name  application
+   Type name:  application
 
-   Subtype name  davnotification+xml
+   Subtype name:  davnotification+xml
 
-   Required parameters  none
+   Required parameters:  none
 
-   Optional parameters  none
+   Optional parameters:  none
 
-   Encoding considerations  Identical to those of "application/xml" as
+   Encoding considerations:  Identical to those of "application/xml" as
       described in RFC7303 [RFC7303].
 
+   Security considerations:  See Section 7.
 
 
-Daboo & Pot             Expires January 23, 2015                [Page 8]
+
+Daboo & Pot             Expires February 20, 2015               [Page 8]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
-   Security considerations  See Section 7.
-
-   Interoperability considerations  There are no known interoperability
+   Interoperability considerations:  There are no known interoperability
       issues.
 
-   Published specification  This specification.
+   Published specification:  This specification.
 
-   Applications that use this media type  No known applications
+   Applications that use this media type:  No known applications
       currently use this media type.
 
-   Fragment identifier considerations  N/A.
+   Fragment identifier considerations:  N/A.
 
    Additional information
 
@@ -498,16 +496,15 @@ Internet-Draft          WebDAV User Notifications              July 2014
    [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
               Internet: Timestamps", RFC 3339, July 2002.
 
-
-
-
-Daboo & Pot             Expires January 23, 2015                [Page 9]
-
-Internet-Draft          WebDAV User Notifications              July 2014
-
-
    [RFC4918]  Dusseault, L., "HTTP Extensions for Web Distributed
               Authoring and Versioning (WebDAV)", RFC 4918, June 2007.
+
+
+
+Daboo & Pot             Expires February 20, 2015               [Page 9]
+
+Internet-Draft          WebDAV User Notifications            August 2014
+
 
    [RFC6352]  Daboo, C., "CardDAV: vCard Extensions to Web Distributed
               Authoring and Versioning (WebDAV)", RFC 6352, August 2011.
@@ -537,9 +534,9 @@ Appendix A.  Backwards-compatibility with earlier drafts
 
    It is possible to conform to both that draft and this specification
    by either creating two different collections, as identified by
-   "notification-URL" in each respective namespace, or alternatively
-   it's possible to use the same resource for both, but use content-
-   negotation using the accept header to ask the server for a specific
+   "notification-URL" in each respective namespace.  Alternatively it's
+   possible to use the same resource for both, but use content-
+   negotation using the Accept header to ask the server for a specific
    representation of a notification.
 
 Authors' Addresses
@@ -557,9 +554,12 @@ Authors' Addresses
 
 
 
-Daboo & Pot             Expires January 23, 2015               [Page 10]
+
+
+
+Daboo & Pot             Expires February 20, 2015              [Page 10]
 
-Internet-Draft          WebDAV User Notifications              July 2014
+Internet-Draft          WebDAV User Notifications            August 2014
 
 
    Evert Pot
@@ -613,4 +613,4 @@ Internet-Draft          WebDAV User Notifications              July 2014
 
 
 
-Daboo & Pot             Expires January 23, 2015               [Page 11]
+Daboo & Pot             Expires February 20, 2015              [Page 11]

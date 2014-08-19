@@ -258,10 +258,7 @@
                             <artwork><![CDATA[
 <!ELEMENT systemstatus (DAV:href?, DAV:description?)>
 <!ATTLIST systemstatus type (low | medium | high) "low">
-
-  <!ELEMENT description CDATA>
-
-<!-- One of DAV:href of DAV:description MUST be present -->
+<!-- One of DAV:href or DAV:description MUST be present -->
 ]]></artwork>
                           </figure>
                         </t>
@@ -273,8 +270,9 @@
   <D:dtstamp>2011-12-09T11:12:53-05:00</D:dtstamp>
   <D:systemstatus type="high">
     <D:href>http://example.com/emergency_shutdown.html</D:href>
-    <D:description xml:lang='en_US'
-    >Emergency shutdown now</D:description>
+    <D:description xml:lang='en_US'>
+        Emergency shutdown now
+    </D:description>
   </D:systemstatus>
 </D:notification>]]></artwork>
                           </figure>
